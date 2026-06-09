@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="node_modules/reveal.js/dist/reveal.css">
+    <link rel="stylesheet" href="node_modules/reveal.js/dist/theme/black.css">
+
+    <title>My Presentation</title>
+
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section>Horizontal Slide</section>
+            <section>
+            <section>Vertical Slide 1</section>
+            <section>Vertical Slide 2</section>
+            </section>
+
+            <section>
+                <h2>The Lorenz Equations</h2>
+                \[\begin{aligned} \dot{x} &amp; = \sigma(y-x) \\ \dot{y} &amp; = \rho x - y -
+                xz \\ \dot{z} &amp; = -\beta z + xy \end{aligned} \]
+            </section>
+
+        </div>
+    </div>
+
+    <script src="node_modules/reveal.js/dist/reveal.js"></script>
+
+    <script src="node_modules/reveal.js/dist/plugin/math.js"></script>
+    <script>
+    Reveal.initialize({ plugins: [RevealMath.KaTeX] });
+    </script>
+</body>
+</html>
