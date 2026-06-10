@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "chart.js": "^4.5.1",
+    "decktape": "^3.16.1",
     "reveal.js": "^6.0.1"
   },
   "devDependencies": {

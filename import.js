@@ -5,10 +5,12 @@ import RevealNotes from 'reveal.js/plugin/notes';
 import 'reveal.js/reveal.css';
 import 'reveal.js/theme/black.css';
 import './style.css';
+import 'reveal.js/plugin/highlight/monokai.css'
+import RevealHighlight from 'reveal.js/plugin/highlight';
 
 // ─── Reveal initialization ───────────────────────────────────
 const deck = new Reveal({
-  plugins: [Markdown, Math, RevealNotes],
+  plugins: [Markdown, Math, RevealNotes, RevealHighlight],
   hash: true,
   controls: true,
   progress: true,
