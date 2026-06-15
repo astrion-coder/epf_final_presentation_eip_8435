@@ -9,7 +9,7 @@
   --text-primary:  #ffffff;
   --text-muted:    #9ca3af;
   --border:        rgba(255,255,255,0.08);
-  --radius:        12px;
+  --radius:        20px;
 }
 
 .reveal,
@@ -42,17 +42,29 @@
 
 /* ─── Slide 1: Title ────────────────────────────────────────── */
 .title-overlay {
-  background: var(--bg-card);
-  backdrop-filter: blur(8px);
-  border: 1px solid var(--border);
+  background: linear-gradient(
+    135deg,
+  rgba(25, 25, 25, 0.85) 0%,
+  rgba(14, 14, 14, 0.7) 35%,
+  rgba(10, 10, 10, 0.2) 65%,
+  rgba(0, 0, 0, 0) 100%
+  );
+
   border-radius: var(--radius);
-  width:  100%;
+
+  width: 100%;
   height: 100%;
   box-sizing: border-box;
-  padding: 40px 52px;
+
+  padding: 1rem 2rem;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.logo-icon {
+  width: 10rem;
 }
 
 .logo-block {
@@ -88,8 +100,8 @@
 }
 
 .presentation-title {
-  font-size: 3.2rem !important;
-  font-weight: 700 !important;
+  font-size: 4rem !important;
+  font-weight: 200 !important;
   line-height: 1.15 !important;
   color: var(--text-primary) !important;
   margin: 0 0 16px !important;
@@ -118,21 +130,21 @@
 }
 
 .meta-name {
-  font-size: 1rem !important;
-  font-weight: 600 !important;
+  font-size: 2rem !important;
+  font-weight: 500 !important;
   color: var(--text-primary) !important;
   margin: 0 0 4px !important;
 }
 
 .meta-dept,
 .meta-univ {
-  font-size: 0.78rem !important;
+  font-size: 1rem !important;
   color: var(--text-muted) !important;
   margin: 0 !important;
 }
 
 .meta-date {
-  font-size: 0.78rem !important;
+  font-size: 1rem !important;
   color: var(--text-muted) !important;
   margin: 0 !important;
 }
