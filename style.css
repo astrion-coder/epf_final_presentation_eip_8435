@@ -43,9 +43,9 @@
 /* ─── Slide 1: Title ────────────────────────────────────────── */
 .title-overlay {
   background: linear-gradient(
-    135deg,
+    90deg,
   rgba(25, 25, 25, 0.85) 0%,
-  rgba(14, 14, 14, 0.7) 35%,
+  rgba(14, 14, 14, 0.5) 35%,
   rgba(10, 10, 10, 0.2) 65%,
   rgba(0, 0, 0, 0) 100%
   );
@@ -65,31 +65,13 @@
 
 .logo-icon {
   width: 10rem;
+  transform: translateY(-10%);
 }
 
 .logo-block {
   display: flex;
   align-items: center;
   gap: 12px;
-}
-
-.logo-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-}
-
-.logo-name {
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--text-primary);
-}
-
-.logo-sub {
-  font-size: 0.65rem;
-  letter-spacing: 0.18em;
-  color: var(--text-muted);
 }
 
 .title-main {
@@ -133,14 +115,14 @@
   font-size: 2rem !important;
   font-weight: 500 !important;
   color: var(--text-primary) !important;
-  margin: 0 0 4px !important;
+  margin: 0 0 10px !important;
 }
 
 .meta-dept,
 .meta-univ {
   font-size: 1rem !important;
   color: var(--text-muted) !important;
-  margin: 0 !important;
+  margin: 0 0 10px !important;
 }
 
 .meta-date {
@@ -154,9 +136,10 @@
   font-size: 1.8rem !important;
   font-weight: 700 !important;
   color: var(--text-primary) !important;
-  margin: 0 0 12px !important;
+  margin: 0 20px 40px !important;
   text-transform: none !important;
   letter-spacing: -0.01em;
+  transform: translateY(60%);
 }
 
 .content-underline {
