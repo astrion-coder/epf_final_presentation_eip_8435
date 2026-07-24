@@ -107,3 +107,31 @@ function renderBarChart() {
     },
   });
 }
+
+// Agenda Item animations
+Reveal.on('slidechanged', event => {
+
+    if (event.currentSlide.id === "agenda") {
+
+        const card = event.currentSlide.querySelector(".agenda-card");
+
+        card.classList.remove("animate");
+        void card.offsetWidth;      // restart animation
+        card.classList.add("animate");
+
+        const items = event.currentSlide.querySelectorAll(".agenda-list li");
+
+        items.forEach((item, i) => {
+
+            item.classList.remove("animate");
+            item.style.animationDelay = `${0.45 + i * 0.12}s`;
+
+            void item.offsetWidth;
+
+            item.classList.add("animate");
+
+        });
+
+    }
+
+});
