@@ -22,4 +22,5 @@ The file will be stored as `slides.pdf`. Currently there is a bug with code bloc
 For the logo, the `.logo-icon` class is used in the `style.css`. This class contains the dimensions of the logo using the `width` parameter. Change this to make any specific logo fit.
 
 # Updates
-Try local iamge generation models to animate the agenda.png to get the moving dots
+Fix the timeline scroll issue for pdf conversion.
+Check if everything else is also dynamic like the timeline.

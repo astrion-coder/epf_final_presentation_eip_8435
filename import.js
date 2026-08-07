@@ -14,10 +14,10 @@ const deck = new Reveal({
   hash: true,
   controls: true,
   progress: true,
-  center: false,          // we handle our own vertical alignment
-  transition: 'fade',
-  transitionSpeed: 'fast',
-  backgroundTransition: 'fade',
+  center: false,            // we handle our own vertical alignment
+  transition: 'slide',      // smooth push: horizontal between sections, vertical within a section
+  transitionSpeed: 'default',
+  backgroundTransition: 'slide',
   width: 1280,
   height: 720,
   margin: 0.04,
@@ -25,26 +25,22 @@ const deck = new Reveal({
 
 deck.initialize();
 
-// ─── Chart.js bar chart (Slide 5) ────────────────────────────
-// Chart.js must be available; install via: npm install chart.js
-// Then import it here:
+// ─── Chart.js bar chart ────────────────────────────────────────
 import { Chart, BarController, CategoryScale, LinearScale, BarElement, Tooltip } from 'chart.js';
 Chart.register(BarController, CategoryScale, LinearScale, BarElement, Tooltip);
 
-// Draw chart once Reveal is ready and the slide is in the DOM
-deck.on('ready', () => {
-  renderBarChart();
+deck.on('ready', (event) => {
+  renderBarChartIfPresent(event.currentSlide);
+  updateSlideNumber(event.currentSlide);
 });
 
-// Re-render if navigating back to the chart slide
 deck.on('slidechanged', (event) => {
-  if (event.indexh === 4) {  // 0-indexed; slide 5 is index 4
-    renderBarChart();
-  }
+  renderBarChartIfPresent(event.currentSlide);
+  updateSlideNumber(event.currentSlide);
 });
 
-function renderBarChart() {
-  const canvas = document.getElementById('barChart');
+function renderBarChartIfPresent(slide) {
+  const canvas = slide && slide.querySelector('#barChart');
   if (!canvas) return;
 
   // Destroy existing instance if any (prevents double-render on revisit)
@@ -108,30 +104,58 @@ function renderBarChart() {
   });
 }
 
-// Agenda Item animations
-Reveal.on('slidechanged', event => {
+// ─── Footer slide numbers ──────────────────────────────────────
+// Reveal keeps every vertical subsection mounted, so we just look up
+// this slide's position in the fully flattened slide list.
+function updateSlideNumber(slide) {
+  const label = slide && slide.querySelector('.slide-number');
+  if (!label) return;
+  const index = deck.getSlides().indexOf(slide);
+  label.textContent = index === -1 ? '' : String(index + 1).padStart(2, '0');
+}
 
-    if (event.currentSlide.id === "agenda") {
+// ─── Timeline (vertical, scrollable, data-driven) ───────────────
+// Add, remove, or reorder entries here — renderTimeline() rebuilds the
+// rail, dots, spacing and scroll-reveal to match. Nothing in index.html
+// or style.css needs to change when the list changes.
+const TIMELINE_ITEMS = [
+  { date: 'Q1 2025', title: 'Kickoff', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' },
+  { date: 'Q2 2025', title: 'Build', desc: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
+  { date: 'Q3 2025', title: 'Launch', desc: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.' },
+  { date: 'Q4 2025', title: 'Scale', desc: 'Duis aute irure dolor in reprehenderit in voluptate velit esse.' },
+  { date: 'Q1 2026', title: 'Review', desc: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa.' },
+];
 
-        const card = event.currentSlide.querySelector(".agenda-card");
+function renderTimeline() {
+  const track = document.getElementById('timeline-v');
+  if (!track) return;
 
-        card.classList.remove("animate");
-        void card.offsetWidth;      // restart animation
-        card.classList.add("animate");
+  track.innerHTML = TIMELINE_ITEMS.map(item => `
+    <div class="timeline-v-item">
+      <div class="timeline-v-rail"><span class="timeline-v-dot"></span></div>
+      <div class="timeline-v-content">
+        <p class="timeline-v-date">${item.date}</p>
+        <div class="timeline-v-card glass-panel">
+          <p class="timeline-v-title">${item.title}</p>
+          <p class="timeline-v-desc">${item.desc}</p>
+        </div>
+      </div>
+    </div>
+  `).join('');
 
-        const items = event.currentSlide.querySelectorAll(".agenda-list li");
+  // Reveal each item as it scrolls into view, then stop watching it so
+  // scrolling back up/down doesn't repeatedly re-trigger the animation.
+  const wrap = track.closest('.timeline-v-wrap');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { root: wrap, threshold: 0.35 });
 
-        items.forEach((item, i) => {
+  track.querySelectorAll('.timeline-v-item').forEach(el => observer.observe(el));
+}
 
-            item.classList.remove("animate");
-            item.style.animationDelay = `${0.45 + i * 0.12}s`;
-
-            void item.offsetWidth;
-
-            item.classList.add("animate");
-
-        });
-
-    }
-
-});
+renderTimeline();
