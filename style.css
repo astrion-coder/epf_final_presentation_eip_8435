@@ -1,686 +1,1366 @@
-/* ─── Reset & base ──────────────────────────────────────────── */
+/* =================================================================
+   Presentation theme
+   -----------------------------------------------------------------
+   Every colour, font, size and radius is a token in :root below and
+   mirrors DESIGN.md. Change a token here and the whole deck follows.
+
+   Type sizes are the DESIGN.md web sizes multiplied by --type-scale,
+   so they read from the back of a room on the 1280×720 slide canvas.
+   Make all text bigger or smaller by changing that one number.
+
+   Two colour themes share these token names: light (below) and dark
+   (the [data-theme="dark"] block after it). `npm run dev:dark` picks
+   the dark one; components only ever use the tokens.
+   ================================================================= */
+
 :root {
-  --bg-dark:       #0d1117;
-  --green:         #3ecf6e;
-  --blue-mid:      #4a7fc1;
-  --blue-light:    #5bbddf;
-  --text-primary:  #ffffff;
-  --text-muted:    #9ca3af;
-  --border:        rgba(255,255,255,0.08);
-  --radius:        20px;
+  color-scheme: light;
 
-  /* Glassmorphism */
-  --glass-bg:     rgba(255,255,255,.045);
-  --glass-border: rgba(255,255,255,.14);
-  --glass-blur:   20px;
-  --glass-shadow: 0 8px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06);
+  /* ─── Colour ─────────────────────────────────────────────── */
+  --color-primary:         #191919;
+  --color-on-primary:      #ffffff;
+  --color-ink:             #000000;
+  --color-ink-deep:        #090909;
+  --color-charcoal:        #525252;
+  --color-body:            #737373;
+  --color-mute:            #a3a3a3;
+  --color-canvas:          #ffffff;
+  --color-surface-soft:    #fafafa;
+  --color-hairline:        #e5e5e5;
+  --color-hairline-strong: #d4d4d4;
+  --color-surface-dark:    #171717;
+  --color-on-dark:         #ffffff;
+  --color-on-dark-mute:    rgba(255, 255, 255, 0.7);
+  --color-hairline-dark:   rgba(255, 255, 255, 0.16);
+  --color-focus-ring:      rgba(59, 130, 246, 0.5);
+  --color-terminal-red:    #ff5f56;
+  --color-terminal-yellow: #ffbd2e;
+  --color-terminal-green:  #27c93f;
+
+  /* ─── Accent and chart colours ───────────────────────────── */
+  /* One blue accent for numbers, markers, links and highlights, from the
+     same family as the first chart colour; 5.4:1 on the canvas, so it is
+     safe for text. Chart series come from a colour-blind-safe palette
+     (blue, then orange), in steps chosen for each theme. */
+  --color-accent:      #256abf;
+  --chart-1:           #2a78d6;
+  --chart-2:           #eb6834;
+
+  /* ─── Font families ──────────────────────────────────────── */
+  /* SF Pro Rounded where the OS has it (Safari/macOS), Nunito
+     (bundled via @fontsource) everywhere else, including PDF export.
+     Monospace is for code, snippets and command tags only; numbers
+     and labels use the body font, as DESIGN.md specifies. */
+  --font-display: "SF Pro Rounded", ui-rounded, "Nunito", system-ui, -apple-system, sans-serif;
+  --font-body:    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-mono:    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+  /* ─── Type scale ─────────────────────────────────────────── */
+  --type-scale: 1.75;
+  --fs-display-xl: calc(36px * var(--type-scale));
+  --fs-display-lg: calc(30px * var(--type-scale));
+  --fs-heading-lg: calc(24px * var(--type-scale));
+  --fs-heading-md: calc(20px * var(--type-scale));
+  --fs-heading-sm: calc(18px * var(--type-scale));
+  --fs-body-md:    calc(16px * var(--type-scale));
+  --fs-body-sm:    calc(14px * var(--type-scale));
+  --fs-caption:    calc(12px * var(--type-scale));
+  --fs-code-md:    calc(16px * var(--type-scale));
+  --fs-code-sm:    calc(14px * var(--type-scale));
+  --fs-code-block: calc(13px * var(--type-scale));
+  --fs-button:     calc(14px * var(--type-scale));
+
+  /* ─── Radius ─────────────────────────────────────────────── */
+  --radius-sm:   6px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-full: 9999px;
+
+  /* ─── Spacing ────────────────────────────────────────────── */
+  --space-xxs:     2px;
+  --space-xs:      4px;
+  --space-sm:      8px;
+  --space-md:      12px;
+  --space-lg:      16px;
+  --space-xl:      24px;
+  --space-xxl:     32px;
+  --space-section: 88px;
+
+  /* ─── Slide frame ────────────────────────────────────────── */
+  --slide-pad-top:    56px;
+  --slide-pad-x:      var(--space-section);
+  --slide-pad-bottom: 96px;   /* leaves room for the footer */
+  --slide-gap:        var(--space-xl);
+  --footer-bottom:    28px;
+
+  /* ─── Motion ─────────────────────────────────────────────── */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);   /* fast start, soft landing */
+  --slide-duration: 0.6s;    /* how long a slide takes to move in */
+
+  /* ─── Backdrop (the animated art behind the slides) ──────── */
+  /* Raise or lower the alphas to make the art stronger or fainter. */
+  --backdrop-line:       rgb(0 0 0 / 0.07);
+  --backdrop-glow:       rgb(0 0 0 / 0.03);
+  --backdrop-speck:      rgb(0 0 0 / 0.22);
+  --backdrop-speck-glow: transparent;
+
+  /* ─── Syntax highlighting (GitHub's light code palette) ──── */
+  --syntax-keyword:  #cf222e;   /* if, const, return, def */
+  --syntax-function: #8250df;   /* function and class names */
+  --syntax-constant: #0550ae;   /* numbers, true/false, attributes */
+  --syntax-string:   #0a3069;   /* strings and regular expressions */
+  --syntax-builtin:  #953800;   /* built-ins like print, range, Error */
+  --syntax-tag:      #116329;   /* HTML tags, shell prompts */
+  --syntax-comment:  #6e7781;   /* comments */
 }
 
-.reveal,
-.reveal .slides {
-  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-  color: var(--text-primary);
+/* ─── Dark theme ─────────────────────────────────────────────
+   The canvas is DESIGN.md's primary colour (#191919), with white ink
+   and the greys swapped end for end. Surfaces step up from the canvas:
+   chips, then hairlines and the "dark" surface (the dark card, the
+   strip), which stays dark and is lifted instead of inverted; the
+   primary pill turns white. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-primary:         #fafafa;
+  --color-on-primary:      #191919;
+  --color-ink:             #fafafa;
+  --color-ink-deep:        #e5e5e5;
+  --color-charcoal:        #d4d4d4;
+  --color-body:            #a3a3a3;
+  --color-mute:            #737373;
+  --color-canvas:          #191919;   /* = light theme's --color-primary */
+  --color-surface-soft:    #222222;
+  --color-hairline:        #2e2e2e;
+  --color-hairline-strong: #404040;
+  --color-surface-dark:    #2e2e2e;
+
+  --color-accent:      #6da7ec;   /* 7:1 on the canvas */
+  --chart-1:           #3987e5;
+  --chart-2:           #d95926;
+
+  --backdrop-line:       rgb(255 255 255 / 0.08);
+  --backdrop-glow:       rgb(255 255 255 / 0.05);
+  --backdrop-speck:      rgb(255 255 255 / 0.55);
+  --backdrop-speck-glow: rgb(255 255 255 / 0.25);
+
+  /* GitHub's dark code palette */
+  --syntax-keyword:  #ff7b72;
+  --syntax-function: #d2a8ff;
+  --syntax-constant: #79c0ff;
+  --syntax-string:   #a5d6ff;
+  --syntax-builtin:  #ffa657;
+  --syntax-tag:      #7ee787;
+  --syntax-comment:  #8b949e;
 }
 
-.reveal .slides section {
-  height: 100%;
-  padding: 0;
-  text-align: left;
-  box-sizing: border-box;
+/* ================================================================
+   Base
+   ================================================================ */
+
+.reveal-viewport {
+  background: var(--color-canvas);
 }
 
-/* ─── Glassmorphic utility ──────────────────────────────────── */
-.glass-panel {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  box-shadow: var(--glass-shadow);
-}
-
-/* Slide Overlay (plain layout wrapper, no glass of its own) */
-.slide-overlay {
-  width: 100%;
-  height: 100%;
-  padding: 1rem 2rem;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
-
-/* ─── Shared overlay (glass card sitting on top of the bg image) ── */
-.dark-overlay {
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  padding: 40px 48px 32px;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-/* ─── Slide: Title ──────────────────────────────────────────── */
-.title-overlay {
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-
-  padding: 1rem 2rem;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.logo-icon {
-  width: 7rem;
-  transform: translateY(-10%);
-}
-
-.logo-block {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.title-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.presentation-heading {
-  transform: translateY(80%);
-  font-size: 0.8rem !important;
-  color: var(--blue-light) !important;
-  margin: 0 0 20px !important;
-  font-weight: 400 !important;
-  letter-spacing: 0.08em;
-}
-
-.presentation-title {
-  font-size: 4rem !important;
-  font-weight: 200 !important;
-  line-height: 1.15 !important;
-  color: var(--text-primary) !important;
-  margin: 0 0 16px !important;
-  text-transform: none !important;
-  letter-spacing: -0.01em;
-}
-
-.presentation-subtitle {
-  font-size: 1.3rem !important;
-  color: var(--green) !important;
-  margin: 0 0 20px !important;
-  font-weight: 400 !important;
-}
-
-.title-divider {
-  width: 48px;
-  height: 3px;
-  background: var(--green);
-  border-radius: 2px;
-}
-
-.title-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-
-.meta-name {
-  font-size: 2rem !important;
-  font-weight: 500 !important;
-  color: var(--text-primary) !important;
-  margin: 0 0 10px !important;
-}
-
-.meta-dept,
-.meta-univ {
-  font-size: 1rem !important;
-  color: var(--text-muted) !important;
-  margin: 0 0 10px !important;
-}
-
-.meta-date {
-  font-size: 1rem !important;
-  color: var(--text-muted) !important;
-  margin: 0 !important;
-}
-
-/* ─── Shared heading ────────────────────────────────────────── */
-.slide-heading {
-  font-size: 1.8rem !important;
-  font-weight: 700 !important;
-  color: var(--text-primary) !important;
-  margin: 0 0 40px !important;
-  text-transform: none !important;
-  letter-spacing: -0.01em;
-  transform: translateY(60%);
-}
-
-.content-underline {
-  width: 40px;
-  height: 3px;
-  background: var(--green);
-  border-radius: 2px;
-  margin-bottom: 24px;
-}
-
-/* ─── Slide: Agenda ─────────────────────────────────────────── */
-.agenda-container {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  margin-top: 0;
-}
-
-.agenda-grid {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-}
-
-.agenda-tile {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  padding: 26px 28px;
-  border-radius: 16px;
-  opacity: 0;
-}
-
-.agenda-tile-num {
-  flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  border: 1.5px solid var(--green);
-}
-
-.agenda-tile-label {
-  font-size: 1.05rem;
-  font-weight: 500;
-  color: #D7D7D7;
-  line-height: 1.35;
-}
-
-/* Recap slides: highlight the current section, mute the rest */
-.agenda-tile--active {
-  background: rgba(62, 207, 110, .10);
-  border-color: rgba(62, 207, 110, .55);
-}
-
-.agenda-tile--active .agenda-tile-num {
-  background: var(--green);
-  border-color: var(--green);
-  color: #06210f;
-}
-
-.agenda-tile--active .agenda-tile-label {
-  color: var(--text-primary);
-  font-weight: 700;
-}
-
-.agenda-tile--dim {
-  background: rgba(255, 255, 255, .02);
-}
-
-.agenda-tile--dim .agenda-tile-num {
-  border-color: rgba(255, 255, 255, .25);
-  color: var(--text-muted);
-}
-
-.agenda-tile--dim .agenda-tile-label {
-  color: var(--text-muted);
+.reveal {
+  font-family: var(--font-body);
+  font-size: var(--fs-body-md);
   font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Play the entrance animation whenever Reveal marks this slide "present" */
-.slides section.present .agenda-tile {
-  animation: tileIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.reveal ::selection {
+  background: var(--color-ink);
+  color: var(--color-on-primary);
 }
 
-.slides section.present .agenda-tile:nth-child(1) { animation-delay: .15s; }
-.slides section.present .agenda-tile:nth-child(2) { animation-delay: .24s; }
-.slides section.present .agenda-tile:nth-child(3) { animation-delay: .33s; }
-.slides section.present .agenda-tile:nth-child(4) { animation-delay: .42s; }
-.slides section.present .agenda-tile:nth-child(5) { animation-delay: .51s; }
-.slides section.present .agenda-tile:nth-child(6) { animation-delay: .60s; }
-
-@keyframes tileIn {
-  from { opacity: 0; transform: translateY(16px) scale(.96); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+/* Every leaf slide is a column flexbox (Reveal is configured with
+   display: 'flex'), so direct children are spaced by --slide-gap. */
+.reveal .slides {
+  text-align: left;
 }
 
-/* Guard against PDF export (decktape) capturing a slide before the
-   animation fires — see README's note on PDF export quirks. */
-@media print {
-  .agenda-tile {
-    opacity: 1 !important;
-    animation: none !important;
-  }
-}
-
-/* ─── Slide: Section Divider ────────────────────────────────── */
-.section-divider-slide {
-  flex-direction: row !important;
-  align-items: center;
-  gap: 32px;
-  padding: 40px 64px !important;
-}
-
-.section-number {
-  font-size: 6rem;
-  font-weight: 800;
-  color: rgba(78, 130, 190, 0.35);
-  line-height: 1;
-  letter-spacing: -0.04em;
-  flex-shrink: 0;
-}
-
-.section-divider-bar {
-  width: 3px;
-  height: 100px;
-  background: var(--border);
-  border-radius: 2px;
-  flex-shrink: 0;
-}
-
-.section-title-block {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.section-title {
-  font-size: 2.4rem !important;
-  font-weight: 700 !important;
-  color: var(--text-primary) !important;
-  margin: 0 !important;
-  text-transform: none !important;
-}
-
-.section-subtitle {
-  font-size: 1rem !important;
-  color: var(--green) !important;
-  margin: 0 !important;
-}
-
-/* ─── Slide: Content + Image ────────────────────────────────── */
-.content-two-col {
-  display: flex;
-  gap: 28px;
-  flex: 1;
-  overflow: hidden;
-}
-
-.content-text {
-  flex: 1.1;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.body-text {
-  font-size: 0.8rem !important;
-  color: var(--text-muted) !important;
-  line-height: 1.6 !important;
-  margin: 0 !important;
-}
-
-.bullet-points {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.bullet-item {
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-  padding: 12px 14px;
-  border-radius: 14px;
-}
-
-.bullet-icon {
-  width: 32px;
-  height: 32px;
-  border: 1.5px solid var(--green);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.bullet-title {
-  font-size: 0.85rem !important;
-  font-weight: 600 !important;
-  color: var(--green) !important;
-  margin: 0 0 2px !important;
-}
-
-.bullet-desc {
-  font-size: 0.75rem !important;
-  color: var(--text-muted) !important;
-  margin: 0 !important;
-  line-height: 1.5 !important;
-}
-
-.content-image {
-  flex: 0.9;
-  overflow: hidden;
-}
-
-.content-image img {
-  width: 100%;
+.reveal .slides section:not(.stack) {
   height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* ─── Slide: Chart layout ───────────────────────────────────── */
-.chart-layout {
-  display: flex;
-  gap: 20px;
-  flex: 1;
-  overflow: hidden;
-}
-
-.chart-container {
-  flex: 2;
-  padding: 20px;
-  display: flex;
+  box-sizing: border-box;
+  padding: var(--slide-pad-top) var(--slide-pad-x) var(--slide-pad-bottom);
   flex-direction: column;
-  gap: 12px;
-  border-radius: 14px;
+  gap: var(--slide-gap);
 }
 
-.chart-container canvas {
-  flex: 1;
-  max-height: 260px;
+/* Centre a slide's content vertically (.middle) or both ways (.centered).
+   Not .center: reveal.js gives that class its own meaning. */
+.reveal .slides section.middle   { justify-content: center; }
+.reveal .slides section.centered { justify-content: center; align-items: center; text-align: center; }
+
+/* ================================================================
+   Typography
+   ================================================================ */
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+  margin: 0;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  letter-spacing: 0;
+  text-transform: none;
+  text-shadow: none;
+  word-wrap: break-word;
 }
 
-.chart-legend {
-  display: flex;
-  gap: 16px;
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  align-items: center;
-  justify-content: center;
+.reveal h1 { font-size: var(--fs-display-xl); font-weight: 500; line-height: 1.11; }
+.reveal h2 { font-size: var(--fs-display-lg); font-weight: 500; line-height: 1.2; }
+.reveal h3 { font-size: var(--fs-heading-lg); font-weight: 600; line-height: 1.33; }
+.reveal h4 { font-size: var(--fs-heading-md); font-weight: 500; line-height: 1.4;  font-family: var(--font-body); }
+.reveal h5 { font-size: var(--fs-heading-sm); font-weight: 500; line-height: 1.56; font-family: var(--font-body); }
+.reveal h6 { font-size: var(--fs-body-md);    font-weight: 500; line-height: 1.5;  font-family: var(--font-body); }
+
+.reveal p {
+  margin: 0;
 }
 
-.legend-dot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 2px;
-  margin-right: 4px;
+.reveal strong,
+.reveal b {
+  color: var(--color-ink);
+  font-weight: 500;
 }
 
-.takeaway-box {
-  flex: 1;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border-radius: 14px;
+.reveal small { font-size: var(--fs-caption); }
+
+.reveal a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
 }
 
-.takeaway-title {
-  font-size: 0.95rem !important;
-  font-weight: 700 !important;
-  color: var(--green) !important;
-  margin: 0 !important;
+.reveal a.link-mute { color: var(--color-body); }
+
+.reveal a:focus-visible {
+  outline: 3px solid var(--color-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
 }
 
-.takeaway-text {
-  font-size: 0.75rem !important;
-  color: var(--text-muted) !important;
-  line-height: 1.6 !important;
-  margin: 0 !important;
+.reveal hr {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--color-hairline);
 }
 
-/* ─── Slide: Stat cards ─────────────────────────────────────── */
-.stats-grid {
-  display: flex;
-  gap: 20px;
-  flex: 1;
+/* Inline code chip */
+.reveal :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  color: var(--color-ink);
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-sm);
+  padding: 0.08em 0.36em;
 }
 
-.stat-card {
-  flex: 1;
-  padding: 28px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  border-radius: 16px;
+.lede {
+  font-size: var(--fs-heading-sm);
+  line-height: 1.56;
+  color: var(--color-body);
 }
 
-.stat-value {
-  font-size: 2.4rem !important;
-  font-weight: 700 !important;
-  color: var(--green) !important;
-  margin: 0 !important;
+.caption {
+  font-size: var(--fs-caption);
+  line-height: 1.33;
+  color: var(--color-body);
 }
 
-.stat-label {
-  font-size: 0.95rem !important;
-  font-weight: 600 !important;
-  color: var(--text-primary) !important;
-  margin: 0 !important;
+.small  { font-size: var(--fs-body-sm); line-height: 1.43; }
+.mono   { font-family: var(--font-mono); }
+.ink    { color: var(--color-ink); }
+.muted  { color: var(--color-mute); }
+
+/* Lists ---------------------------------------------------------- */
+.reveal ul,
+.reveal ol {
+  margin: 0;
+  padding-left: 1.2em;
+  color: var(--color-charcoal);
 }
 
-.stat-desc {
-  font-size: 0.75rem !important;
-  color: var(--text-muted) !important;
-  line-height: 1.5 !important;
-  margin: 0 !important;
+.reveal li + li          { margin-top: var(--space-sm); }
+.reveal li > ul,
+.reveal li > ol          { margin-top: var(--space-sm); font-size: var(--fs-body-sm); }
+.reveal ul > li::marker  { color: var(--color-accent); }
+.reveal ol > li::marker  { color: var(--color-accent); font-variant-numeric: tabular-nums; }
+
+/* ✓ feature list */
+.reveal ul.checks {
+  list-style: none;
+  padding: 0;
 }
 
-/* ─── Slide: Code ───────────────────────────────────────────── */
-.code-panel {
-  flex: 1;
-  display: flex;
-  padding: 8px 16px;
-  overflow: hidden;
-  border-radius: 16px;
-}
-
-.code-panel pre {
-  width: 100% !important;
-  margin: 0 !important;
-  box-shadow: none !important;
-  background: transparent !important;
-}
-
-.code-panel pre code {
-  background: transparent !important;
-  font-size: 0.95rem !important;
-  max-height: 420px;
-}
-
-/* ─── Slide: Timeline (vertical, scrollable, data-driven) ────── */
-.timeline-v-wrap {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 8px;
-  mask-image: linear-gradient(to bottom, transparent 0, black 24px, black calc(100% - 24px), transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 24px, black calc(100% - 24px), transparent 100%);
-}
-
-.timeline-v-wrap::-webkit-scrollbar {
-  width: 6px;
-}
-
-.timeline-v-wrap::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.timeline-v-wrap::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, .15);
-  border-radius: 3px;
-}
-
-.timeline-v-item {
-  display: flex;
-  gap: 20px;
-  padding: 20px 0 36px;
-}
-
-.timeline-v-item:first-child {
-  padding-top: 4px;
-}
-
-.timeline-v-item:last-child {
-  padding-bottom: 4px;
-}
-
-/* Entrance state — lifted to .is-visible by an IntersectionObserver
-   as each item scrolls into view (see renderTimeline() in import.js) */
-.timeline-v-item {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity .6s ease, transform .6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.timeline-v-item.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.timeline-v-rail {
+.reveal ul.checks > li {
   position: relative;
-  width: 14px;
-  flex-shrink: 0;
-  display: flex;
-  justify-content: center;
+  padding-left: 1.6em;
+  font-size: var(--fs-body-sm);
+  line-height: 1.43;
 }
 
-/* Connects this item's dot down to the next one's — because every
-   item draws its own segment, the rail always spans exactly as many
-   entries as TIMELINE_ITEMS has, with no lengths to hand-tune. */
-.timeline-v-rail::before {
-  content: '';
+.reveal ul.checks > li::before {
+  content: "✓";
   position: absolute;
-  top: 14px;
-  bottom: -36px;
-  left: 50%;
-  width: 2px;
-  background: rgba(62, 207, 110, .35);
-  transform: translateX(-50%) scaleY(0);
-  transform-origin: top;
-  transition: transform .5s ease .15s;
+  left: 0;
+  color: var(--color-accent);
+  font-weight: 600;
 }
 
-.timeline-v-item:last-child .timeline-v-rail::before {
-  display: none;
+/* Citations — <a class="cite" href="#/references">[1]</a> -------- */
+.reveal a.cite {
+  color: var(--color-accent);
+  text-decoration: none;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
-.timeline-v-item.is-visible .timeline-v-rail::before {
-  transform: translateX(-50%) scaleY(1);
+/* References — IEEE style: [n] labels with a hanging indent ------- */
+.reveal ol.references {
+  counter-reset: reference;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-body-sm);
+  line-height: 1.43;
+  color: var(--color-charcoal);
 }
 
-.timeline-v-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--bg-dark);
-  border: 2px solid var(--green);
-  box-shadow: 0 0 0 4px rgba(62, 207, 110, .12);
-  transform: scale(0);
-  transition: transform .4s cubic-bezier(0.16, 1, 0.3, 1);
+.reveal ol.references > li {
+  position: relative;
+  margin: 0;
+  padding-left: 2.6em;
+  counter-increment: reference;
 }
 
-.timeline-v-item.is-visible .timeline-v-dot {
-  transform: scale(1);
+.reveal ol.references > li::before {
+  content: "[" counter(reference) "]";
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
 }
 
-.timeline-v-content {
+.reveal ol.references cite { font-style: italic; }
+
+/* Credits — a name in ink with what they did beneath (acknowledgements) */
+.reveal ul.credits {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reveal ul.credits > li {
+  margin: 0;
+  font-size: var(--fs-body-sm);
+  line-height: 1.43;
+  color: var(--color-body);
+}
+
+.reveal ul.credits > li > strong {
+  display: block;
+  font-size: var(--fs-body-md);
+  color: var(--color-ink);
+}
+
+/* Blockquote ----------------------------------------------------- */
+.reveal blockquote {
+  width: auto;
+  margin: 0;
+  padding: 0 0 0 var(--space-xxl);
+  border-left: 2px solid var(--color-accent);
+  background: none;
+  box-shadow: none;
+  font-family: var(--font-display);
+  font-size: var(--fs-heading-lg);
+  font-weight: 500;
+  font-style: normal;
+  line-height: 1.33;
+  color: var(--color-ink);
+}
+
+.reveal blockquote p + p { margin-top: var(--space-lg); }
+
+.reveal blockquote footer {
+  margin-top: var(--space-xl);
+  font-family: var(--font-body);
+  font-size: var(--fs-body-sm);
+  font-weight: 400;
+  color: var(--color-body);
+}
+
+/* Tables (the highlight.js line-number table is excluded) -------- */
+.reveal table:not(.hljs-ln) {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-body-sm);
+  line-height: 1.43;
+  font-variant-numeric: tabular-nums;
+}
+
+.reveal table:not(.hljs-ln) th,
+.reveal table:not(.hljs-ln) td {
+  padding: var(--space-md) var(--space-lg);
+  text-align: left;
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.reveal table:not(.hljs-ln) th {
+  color: var(--color-ink);
+  font-weight: 500;
+  border-bottom-color: var(--color-hairline-strong);
+}
+
+.reveal table:not(.hljs-ln) td            { color: var(--color-charcoal); }
+.reveal table:not(.hljs-ln) :is(th, td):first-child { padding-left: 0; }
+.reveal table:not(.hljs-ln) :is(th, td):last-child  { padding-right: 0; }
+.reveal table:not(.hljs-ln) .num          { text-align: right; }
+.reveal table:not(.hljs-ln) tr.is-marked td { color: var(--color-accent); font-weight: 500; }
+
+/* Images & figures ------------------------------------------------ */
+.reveal img {
+  max-width: 100%;
+  margin: 0;
+}
+
+.figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  min-height: 0;
+}
+
+.figure img {
+  display: block;
   flex: 1;
+  width: 100%;
+  min-height: 0;
+  object-fit: cover;
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg);
+}
+
+.figure figcaption {
+  font-size: var(--fs-caption);
+  line-height: 1.33;
+  color: var(--color-body);
+}
+
+/* ================================================================
+   Layout helpers
+   ================================================================ */
+
+/* Vertical group with even spacing (use inside columns and cards) */
+.flow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
   min-width: 0;
 }
 
-.timeline-v-date {
-  font-size: 0.7rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.06em;
-  color: var(--green) !important;
-  margin: 0 0 8px !important;
-  text-transform: uppercase;
-}
+.flow--loose { gap: var(--space-xl); }
+.flow--tight { gap: var(--space-sm); }
 
-.timeline-v-card {
-  border-radius: 14px;
-  padding: 16px 20px;
-}
-
-.timeline-v-title {
-  font-size: 0.95rem !important;
-  font-weight: 600 !important;
-  color: var(--text-primary) !important;
-  margin: 0 0 4px !important;
-}
-
-.timeline-v-desc {
-  font-size: 0.75rem !important;
-  color: var(--text-muted) !important;
-  line-height: 1.5 !important;
-  margin: 0 !important;
-}
-
-/* ─── Footer (all slides except title/closing) ──────────────── */
-.slide-footer {
+/* Horizontal group that wraps (pills, tags) */
+.row {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
-  margin-top: auto;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
+  gap: var(--space-md);
 }
 
-.footer-logo {
+.centered > .row { justify-content: center; }
+
+/* Grid columns. Add to a direct child of a slide. */
+.cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-xxl);
+  align-items: start;
+  min-height: 0;
+}
+
+.cols--3          { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-xl); }
+.cols--wide-left  { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
+.cols--wide-right { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
+.cols--middle     { align-items: center; }
+.cols--stretch    { align-items: stretch; }
+
+/* Let a block take all remaining height on the slide */
+.fill {
+  flex: 1;
+  min-height: 0;
+}
+
+/* ================================================================
+   Components (names follow DESIGN.md)
+   ================================================================ */
+
+/* Pills — button-primary / -secondary / -on-dark / -disabled ------ */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  padding: 0.57em 1.43em;
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-family: var(--font-body);
+  font-size: var(--fs-button);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.reveal a.pill { color: var(--color-on-primary); text-decoration: none; }
+.pill:active   { background: var(--color-ink-deep); }
+
+.pill--secondary,
+.reveal a.pill--secondary {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  border-color: var(--color-hairline-strong);
+}
+
+/* White in both themes, with the dark surface as its text colour */
+.pill--on-dark,
+.reveal a.pill--on-dark {
+  background: var(--color-on-dark);
+  color: var(--color-surface-dark);
+}
+
+.pill--disabled {
+  background: var(--color-surface-soft);
+  color: var(--color-mute);
+  pointer-events: none;
+}
+
+.pill:focus-visible {
+  outline: 3px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Install snippet — the signature monospace pill ------------------ */
+.snippet {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 0.75em;
+  max-width: 100%;
+  padding: 0.75em 1.25em;
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-soft);
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: var(--fs-code-md);
+  line-height: 1.5;
+  cursor: copy;
+}
+
+.centered > .snippet { align-self: center; }
+
+.snippet::before {
+  content: "$";
+  color: var(--color-mute);
+  user-select: none;
+}
+
+.snippet.is-copied::after {
+  content: "copied";
+  font-size: var(--fs-caption);
+  color: var(--color-body);
+}
+
+/* Command tag — small inline monospace chip ----------------------- */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.43em 0.86em;
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-soft);
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: var(--fs-code-sm);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Cards — pricing-card / pricing-card-dark ------------------------ */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  min-width: 0;
+  padding: var(--space-xxl);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg);
+  background: var(--color-canvas);
+  color: var(--color-body);
+}
+
+.card--compact { padding: var(--space-xl); gap: var(--space-md); }
+
+.card--dark {
+  background: var(--color-surface-dark);
+  border-color: var(--color-surface-dark);
+  color: var(--color-on-dark-mute);
+}
+
+.card--dark :is(h1, h2, h3, h4, h5, h6, strong, .figure-value),
+.card--dark ul.checks > li::before { color: var(--color-on-dark); }
+.card--dark ul.checks > li          { color: var(--color-on-dark-mute); }
+.card--dark hr                      { border-top-color: var(--color-hairline-dark); }
+
+/* Hover: a card lifts and its border glows in the accent colour, a way
+   to point at one option while talking. `translate` (not `transform`)
+   leaves fragment animations on cards untouched.
+   Selected: in a group with data-select, clicking a card selects it
+   (import.js); it keeps the lifted, glowing look and gains a faint
+   accent tint, so it stays distinct from a card that is only hovered. */
+.card {
+  transition:
+    translate 0.3s var(--ease-out-expo),
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.card:hover,
+.card.is-selected {
+  translate: 0 -6px;
+  border-color: var(--color-accent);
+  box-shadow:
+    0 0 0 1px var(--color-accent),
+    0 0 28px 2px color-mix(in srgb, var(--color-accent) 35%, transparent);
+}
+
+.card.is-selected {
+  background: color-mix(in srgb, var(--color-accent) 7%, var(--color-canvas));
+}
+
+[data-select] > .card { cursor: pointer; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card:hover,
+  .card.is-selected { translate: none; }   /* keep the glow, skip the lift */
+}
+
+/* Large number inside a card or stat block */
+.figure-value {
+  font-family: var(--font-display);
+  font-size: var(--fs-display-lg);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--color-ink);
+}
+
+.figure-value small {
+  font-family: var(--font-body);
+  font-size: var(--fs-body-sm);
+  font-weight: 400;
+  color: inherit;
+  opacity: 0.7;
+}
+
+/* Rows — faq-row (Q&A) and numbered agenda rows ------------------- */
+.reveal .rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--color-hairline);
+}
+
+.reveal .rows > li {
+  margin: 0;
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.row-title {
+  font-size: var(--fs-heading-sm);
+  font-weight: 500;
+  line-height: 1.56;
+  color: var(--color-ink);
+}
+
+.row-text {
+  margin-top: var(--space-xs);
+  font-size: var(--fs-body-md);
+  line-height: 1.5;
+  color: var(--color-body);
+}
+
+/* Numbered variant puts number, title and description on one line. The rows share
+   one grid (subgrid) so the columns line up whatever the lead's width. */
+.reveal .rows--numbered {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr) auto;
+  column-gap: var(--space-xl);
+}
+
+.reveal .rows--numbered > li {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: baseline;
+}
+
+/* A small label ({typography.body-sm-strong}); equal-width digits keep
+   01 to 05 lined up */
+.rows--numbered .row-num {
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-accent);
+}
+
+.rows--numbered .row-text {
+  margin: 0;
+  font-size: var(--fs-body-sm);
+  text-align: right;
+}
+
+/* Dark CTA strip -------------------------------------------------- */
+.strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xl);
+  padding: var(--space-xl) var(--space-xxl);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-dark);
+  color: var(--color-on-dark);
+  font-family: var(--font-display);
+  font-size: var(--fs-heading-md);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Terminal card — wraps a code block ------------------------------ */
+.terminal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  min-width: 0;
+  min-height: 0;
+  padding: var(--space-lg) var(--space-xl) var(--space-xl);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg);
+  background: var(--color-canvas);
+}
+
+.terminal-bar {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.62rem;
-  letter-spacing: 0.14em;
-  color: var(--text-muted);
 }
 
-.slide-number {
-  font-size: 0.72rem;
-  color: var(--text-muted);
+.terminal-bar::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  margin-right: 40px;   /* room for the yellow and green dots drawn by the shadows */
+  border-radius: var(--radius-full);
+  background: var(--color-terminal-red);
+  box-shadow: 20px 0 0 var(--color-terminal-yellow), 40px 0 0 var(--color-terminal-green);
 }
 
-/* ─── Reveal.js overrides ────────────────────────────────────── */
-.reveal .slides section h1,
-.reveal .slides section h2,
-.reveal .slides section h3,
-.reveal .slides section p {
+.terminal-bar span {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  color: var(--color-mute);
+}
+
+/* Code blocks ----------------------------------------------------- */
+.reveal pre {
+  position: relative;   /* anchors the stacked copies used for line-step highlights */
+  width: 100%;
+  margin: 0;
+  box-shadow: none;
+  font-family: var(--font-mono);
+  font-size: var(--fs-code-block);
+  line-height: 1.5;
   text-align: left;
+  word-wrap: normal;
 }
 
-.reveal .progress {
-  color: var(--green);
+.reveal pre code {
+  display: block;
+  max-height: 420px;
+  padding: 0;
+  overflow: auto;
+  /* Opaque so the stacked step copies never show through each other */
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: inherit;
+  white-space: pre;
+  tab-size: 4;
 }
 
-.reveal .controls {
-  color: var(--green);
+.reveal .hljs-ln-numbers {
+  padding-right: 1.25em;
+  color: var(--color-mute);
+  opacity: 1;
+  user-select: none;
 }
 
-/* Hide default Reveal backgrounds that might bleed */
-.reveal .slide-background {
-  background-color: var(--bg-dark);
+/* Shell session: a plain <pre class="shell"> with prompt/comment spans */
+.reveal pre.shell {
+  color: var(--color-ink);
+  white-space: pre;
+}
+
+.shell .prompt  { color: var(--syntax-tag); user-select: none; }
+.shell .comment { color: var(--syntax-comment); }
+.shell .output  { color: var(--color-body); }
+
+/* Syntax colours (highlight.js classes), from the --syntax-* tokens.
+   Anything not listed, such as parameters and punctuation, stays ink. */
+.hljs-keyword,
+.hljs-doctag,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable.language_,
+.hljs-meta .hljs-keyword,
+.hljs-deletion              { color: var(--syntax-keyword); }
+.hljs-title,
+.hljs-title.function_,
+.hljs-title.class_          { color: var(--syntax-function); }
+.hljs-number,
+.hljs-literal,
+.hljs-attr,
+.hljs-attribute,
+.hljs-variable,
+.hljs-operator,
+.hljs-meta,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id           { color: var(--syntax-constant); }
+.hljs-string,
+.hljs-regexp,
+.hljs-meta .hljs-string     { color: var(--syntax-string); }
+.hljs-built_in,
+.hljs-symbol,
+.hljs-bullet                { color: var(--syntax-builtin); }
+.hljs-name,
+.hljs-selector-tag,
+.hljs-selector-pseudo,
+.hljs-quote,
+.hljs-addition              { color: var(--syntax-tag); }
+.hljs-comment,
+.hljs-code,
+.hljs-formula               { color: var(--syntax-comment); font-style: italic; }
+.hljs-section               { color: var(--syntax-constant); font-weight: 600; }
+.hljs-emphasis              { font-style: italic; }
+.hljs-strong                { font-weight: 600; }
+
+/* Mathematics (KaTeX) --------------------------------------------- */
+.reveal .katex         { font-size: 1.1em; color: var(--color-ink); }
+.reveal .katex-display { margin: 0; }
+
+.derivation {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--color-hairline);
+}
+
+.derivation > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 12em;
+  align-items: center;
+  gap: var(--space-xl);
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.derivation .katex-display { text-align: left; }
+.derivation .katex-display > .katex { text-align: left; }
+.derivation .note          { font-size: var(--fs-body-sm); color: var(--color-body); }
+
+/* Charts (Chart.js) ----------------------------------------------- */
+.chart {
+  position: relative;
+  width: 100%;
+  height: 300px;
+}
+
+/* Stats ----------------------------------------------------------- */
+.stats {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  border-top: 1px solid var(--color-hairline);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-xl) var(--space-xl) 0 0;
+}
+
+.stat + .stat {
+  padding-left: var(--space-xl);
+  border-left: 1px solid var(--color-hairline);
+}
+
+.stat .figure-value { font-size: var(--fs-display-xl); line-height: 1.11; color: var(--color-accent); }
+.stat-label         { color: var(--color-ink); font-weight: 500; }
+.stat-text          { font-size: var(--fs-body-sm); line-height: 1.43; }
+
+/* Timeline — a vertical rail of steps, top to bottom ---------------
+   Each <li> is a dot on the rail with its date, title and text beside
+   it; the rail runs from one dot to the next. Finished steps (is-done)
+   fill their dot, and the rail between two finished steps turns accent. */
+.reveal ol.timeline {
+  --timeline-gap: var(--space-xxl);   /* space between steps */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--timeline-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--color-body);
+}
+
+.reveal ol.timeline > li {
+  position: relative;
+  margin: 0;
+  padding-left: 44px;
+}
+
+/* The dot, level with the date */
+.reveal ol.timeline > li::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 0;
+  z-index: 1;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius-full);
+  background: var(--color-canvas);
+}
+
+/* The rail, from under this dot down to the next one */
+.reveal ol.timeline > li::after {
+  content: "";
+  position: absolute;
+  top: 22px;
+  bottom: calc(-1 * var(--timeline-gap) - 6px);
+  left: 7px;
+  width: 1px;
+  background: var(--color-mute);
+  transform-origin: top;
+}
+
+.reveal ol.timeline > li:last-child::after                  { display: none; }
+.reveal ol.timeline > li.is-done::before                    { background: var(--color-accent); }
+.reveal ol.timeline > li.is-done:has(+ li.is-done)::after   { background: var(--color-accent); }
+
+/* Growing timeline -------------------------------------------------
+   Put the list in a .timeline-window and make later steps fragments
+   (class="fragment custom"). The window shows two steps at a time;
+   import.js glides the list up as each step appears. A new step comes
+   in three beats: the rail grows down from the last dot, the new dot
+   pops in, then its text slides in beside it. Going back undoes it
+   straight away. */
+.timeline-window {
+  min-height: 0;
+  padding-top: var(--space-xl);
+  overflow: hidden;
+  /* Steps leaving at the top fade out instead of being cut off */
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 var(--space-xl));
+          mask-image: linear-gradient(to bottom, transparent, #000 var(--space-xl));
+}
+
+.timeline-window > ol.timeline { transition: translate 0.6s var(--ease-out-expo); }
+
+/* Hidden step: no rail leading to it, no dot, no text */
+.reveal ol.timeline > li.fragment {
+  opacity: 1;
+  visibility: inherit;
+  transition: none;
+}
+
+.reveal ol.timeline > li:has(+ li.fragment:not(.visible))::after { scale: 1 0; transition: scale 0.2s ease; }
+.reveal ol.timeline > li.fragment:not(.visible)::before          { scale: 0;   transition: scale 0.15s ease; }
+.reveal ol.timeline > li.fragment:not(.visible) > * {
+  opacity: 0;
+  translate: -12px 0;
+  transition: opacity 0.15s ease, translate 0.15s ease;
+}
+
+/* Appearing step: rail, then dot, then text */
+.reveal ol.timeline > li::after            { transition: scale 0.4s var(--ease-out-expo) 0.1s; }
+.reveal ol.timeline > li.fragment::before  { transition: scale 0.3s var(--ease-out-expo) 0.4s; }
+.reveal ol.timeline > li.fragment > * {
+  transition: opacity 0.4s ease 0.5s, translate 0.5s var(--ease-out-expo) 0.5s;
+}
+
+/* In the PDF (one page per slide) every step shows at once, so the
+   timeline lays out compactly: one row per step, the whole list in view */
+html:is(.export, .reveal-print):not(.export-steps) .timeline-window {
+  padding-top: 0;
+  overflow: visible;
+  -webkit-mask-image: none;
+          mask-image: none;
+}
+
+/* The rows share one grid (subgrid), so titles and texts line up */
+html:is(.export, .reveal-print):not(.export-steps) .timeline-window > ol.timeline {
+  --timeline-gap: var(--space-md);
+  display: grid;
+  grid-template-columns: 6em max-content minmax(0, 1fr);
+  column-gap: var(--space-xl);
+  translate: none !important;
+}
+
+html:is(.export, .reveal-print):not(.export-steps) .reveal ol.timeline > li {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: baseline;
+}
+
+html:is(.export, .reveal-print):not(.export-steps) .reveal ol.timeline > li > * { margin: 0; }
+html:is(.export, .reveal-print):not(.export-steps) .reveal ol.timeline p        { font-size: var(--fs-body-sm); }
+html:is(.export, .reveal-print):not(.export-steps) .reveal ol.timeline > li::before { top: 16px; }
+html:is(.export, .reveal-print):not(.export-steps) .reveal ol.timeline > li::after {
+  top: 32px;
+  bottom: calc(-1 * var(--timeline-gap) - 16px);
+}
+
+.timeline-date {
+  display: block;
+  margin-bottom: var(--space-xs);
+  font-size: var(--fs-caption);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-mute);
+}
+
+.reveal ol.timeline h5 { margin-bottom: var(--space-xs); }
+.reveal ol.timeline p  { font-size: var(--fs-body-md); line-height: 1.5; }
+
+/* Auto-animate demo boxes ----------------------------------------- */
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 140px;
+  height: 140px;
+  border: 1px solid var(--color-hairline-strong);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-soft);
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+.box--dark {
+  background: var(--color-surface-dark);
+  border-color: var(--color-surface-dark);
+  color: var(--color-on-dark);
+}
+
+/* ================================================================
+   Special slides
+   ================================================================ */
+
+/* Title & closing slides */
+.logo {
+  width: 72px;
+  height: 72px;
+}
+
+.meta {
+  font-size: var(--fs-body-sm);
+  color: var(--color-body);
+}
+
+.meta strong { color: var(--color-ink); }
+
+/* Section divider — same background as every other slide, so a deck
+   never alternates light and dark pages. Size alone sets it apart. */
+.reveal .slides section.divider { justify-content: center; }
+.reveal section.divider h2      { font-size: var(--fs-display-xl); line-height: 1.11; }
+
+.divider-num {
+  font-size: var(--fs-body-md);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-accent);
+}
+
+/* Footer added by import.js: one copy that stays put while slides move
+   (each slide gets its own copy only in Chrome's print view) */
+.slide-footer {
+  position: absolute;
+  right: var(--slide-pad-x);
+  bottom: var(--footer-bottom);
+  left: var(--slide-pad-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-hairline);
+  font-size: var(--fs-caption);
+  line-height: 1.33;
+  color: var(--color-body);
+  transition: opacity 0.4s ease;
+}
+
+.slide-footer .slide-count {
+  font-variant-numeric: tabular-nums;
+}
+
+/* The fixed footer's layer: one slide in size, centred and scaled like
+   the slides (import.js sets the size and --slide-scale) */
+.slide-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  transform: translate(-50%, -50%) scale(var(--slide-scale, 1));
+  pointer-events: none;
+}
+
+/* Fades out on slides with class="no-footer", and in the overview */
+.slide-footer.is-hidden                { opacity: 0; }
+.reveal.overview .slide-footer--fixed  { display: none; }
+
+/* Old and new footer text sit in the same grid cell and cross-fade */
+.footer-swap {
+  display: inline-grid;
+}
+
+.footer-swap > span {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.footer-swap > span.is-current { opacity: 1; }
+.footer-swap.slide-count       { justify-items: end; }
+
+/* ================================================================
+   Backdrop — slow abstract art behind every slide (built by backdrop.js)
+   One fixed layer under .reveal. Only transform and opacity animate,
+   so the browser can run it smoothly. The mask keeps the art faint
+   in the upper left, where titles and text sit, and fuller at the
+   edges. Cards, code and chips are opaque, so the art never runs
+   through them.
+   ================================================================ */
+
+.reveal { z-index: 1; }   /* slides stay above the backdrop */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  color: var(--backdrop-line);   /* the SVG strokes use currentColor */
+  -webkit-mask-image: radial-gradient(ellipse 70% 75% at 30% 35%, rgb(0 0 0 / 0.25), #000);
+          mask-image: radial-gradient(ellipse 70% 75% at 30% 35%, rgb(0 0 0 / 0.25), #000);
+}
+
+/* Soft glows that drift and swell */
+.backdrop-glow {
+  position: absolute;
+  width: 70vmax;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--backdrop-glow), transparent);
+  animation: backdrop-drift 50s ease-in-out infinite alternate;
+}
+
+.backdrop-glow--a { top: -32vmax; right: -24vmax; }
+.backdrop-glow--b { bottom: -38vmax; left: -26vmax; animation-duration: 64s; animation-delay: -24s; }
+.backdrop-glow--c { top: 40vh; left: 50vw; width: 46vmax; animation-duration: 42s; animation-direction: alternate-reverse; }
+
+@keyframes backdrop-drift {
+  to { transform: translate(-6vw, 5vh) scale(1.12); }
+}
+
+/* Concentric rings in the top-right corner; the dashed ones turn */
+.backdrop-rings {
+  position: absolute;
+  top: -20vmin;
+  right: -16vmin;
+  width: 80vmin;
+  height: 80vmin;
+  fill: none;
+  stroke: currentColor;
+}
+
+.backdrop-rings circle { vector-effect: non-scaling-stroke; }
+.backdrop-rings--cw    { animation: backdrop-turn 180s linear infinite; }
+.backdrop-rings--ccw   { animation: backdrop-turn 240s linear infinite reverse; }
+
+@keyframes backdrop-turn {
+  to { transform: rotate(1turn); }
+}
+
+/* Ribbon of lines along the bottom, flowing left */
+.backdrop-waves {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 36vh;
+  fill: none;
+  stroke: currentColor;
+  animation: backdrop-flow 90s linear infinite;
+}
+
+.backdrop-waves path { vector-effect: non-scaling-stroke; }
+
+@keyframes backdrop-flow {
+  to { transform: translateX(-50%); }
+}
+
+/* Specks that rise slowly, swaying a little */
+.backdrop-specks span {
+  position: absolute;
+  bottom: -4vh;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: var(--backdrop-speck);
+  box-shadow: 0 0 8px 1px var(--backdrop-speck-glow);
+  opacity: 0;
+  animation: backdrop-rise var(--duration) var(--delay) linear infinite;
+}
+
+@keyframes backdrop-rise {
+  0%   { transform: translate(0, 0); opacity: 0; }
+  10%  { opacity: 1; }
+  50%  { transform: translate(var(--sway), -55vh); }
+  85%  { opacity: 0.6; }
+  100% { transform: translate(0, -112vh); opacity: 0; }
+}
+
+/* People who ask their system for less motion get the art standing still */
+@media (prefers-reduced-motion: reduce) {
+  .backdrop * { animation: none !important; }
+  .backdrop-specks { display: none; }
+}
+
+/* ================================================================
+   Custom cursor — an iPad-style pointer (moved and sized by cursor.js)
+   A dot in the text colour with a thin outline in the background
+   colour, so it stays visible on any surface. Over a button it turns
+   into a soft tint in the button's shape. All colours are theme tokens.
+   ================================================================ */
+
+html.has-custom-cursor,
+html.has-custom-cursor * { cursor: none !important; }   /* hide the system pointer */
+
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;            /* above the slides and reveal's arrows */
+  box-sizing: border-box;
+  width: 14px;              /* cursor.js sets the size while it morphs */
+  height: 14px;
+  border: 2px solid var(--color-canvas);
+  border-radius: var(--radius-full);
+  background: var(--color-ink);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, scale 0.18s ease, background-color 0.2s ease, border-color 0.2s ease;
+  will-change: translate, width, height;
+}
+
+html.cursor-visible .cursor { opacity: 1; }
+
+/* Snapped to a button, link or snippet: a soft tint in its shape */
+.cursor.is-snapped {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--color-ink) 10%, transparent);
+}
+
+/* Over areas too large to snap to (slides in the overview) */
+.cursor.is-hovering {
+  scale: 1.5;
+  background: color-mix(in srgb, var(--color-ink) 35%, transparent);
+}
+
+.cursor.is-pressed             { scale: 0.85; }
+.cursor.is-snapped.is-pressed  { scale: 0.96; }
+.cursor.is-hovering.is-pressed { scale: 1.3; }
+
+/* The element under a snapped cursor drifts after the mouse, smoothly */
+.cursor-lifted { transition: translate 0.15s ease-out; }
+
+/* ================================================================
+   Slide changes
+   Slides move with reveal.js's `slide` transition, timed here by
+   --slide-duration with an expo ease-out: they move off quickly and
+   settle softly. The slide moves as one piece; nothing fades in.
+   ================================================================ */
+
+.reveal .slides section {
+  transition-duration: var(--slide-duration);
+  transition-timing-function: var(--ease-out-expo);
+}
+
+/* ================================================================
+   Reveal chrome
+   ================================================================ */
+
+.reveal .controls                      { color: var(--color-ink); }
+.reveal .progress                      { height: 2px; color: var(--color-accent); background: var(--color-hairline); }
+
+/* Lines outside the current step of a code highlight */
+.reveal .hljs.has-highlights tr:not(.highlight-line) { opacity: 0.3; }
+
+/* ================================================================
+   PDF export  (?export for decktape, ?print-pdf for Chrome — see README)
+   Shows one clean page per slide: no step copies of code blocks,
+   no dimmed lines, no transitions. The backdrop stands still, so
+   every page shows the same art. Its specks are left out, and so are
+   its glows: a PDF can't hold such faint fades and prints them as
+   hard-edged discs.
+   ================================================================ */
+
+html:is(.export, .reveal-print):not(.export-steps) .reveal pre code.fragment { display: none; }
+html:is(.export, .reveal-print):not(.export-steps) .reveal .hljs.has-highlights tr:not(.highlight-line) { opacity: 1; }
+html:is(.export, .reveal-print) :is(.reveal, .backdrop) * { transition: none !important; animation: none !important; }
+html:is(.export, .reveal-print) :is(.backdrop-specks, .backdrop-glow) { display: none; }
+
+/* reveal.js print mode resets slide padding and display; restore ours */
+html.reveal-print .reveal .slides section:not(.stack) {
+  display: flex !important;
+  padding: var(--slide-pad-top) var(--slide-pad-x) var(--slide-pad-bottom) !important;
 }

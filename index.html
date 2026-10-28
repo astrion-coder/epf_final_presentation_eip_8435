@@ -3,378 +3,530 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Presentation Template</title>
+  <title>Presentation Title</title>
+  <link rel="icon" href="/favicon.ico" />
 </head>
 <body>
-  <div class="reveal">
+  <!-- data-footer is the text on the left of every slide footer. The other
+       attributes each turn on one effect; delete any to turn it off:
+       data-backdrop  the animated art behind the slides
+       data-cursor    the iPad-style pointer -->
+  <div class="reveal" data-footer="Presentation Title at Event Name 2026" data-backdrop data-cursor>
     <div class="slides">
 
-      <!-- Slide: Title -->
-      <section class="slide-title" data-background-image="/images/background.png" data-background-size="cover" data-background-position="center">
-        <div class="title-overlay">
-          <!-- <div class="logo-block">
-            <div class="logo-icon">
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="2" y="2" width="28" height="28" rx="4" stroke="#3ecf6e" stroke-width="2" fill="none"/>
-                <path d="M8 24 L16 8 L24 24" stroke="#3ecf6e" stroke-width="2" fill="none"/>
-                <line x1="10" y1="20" x2="22" y2="20" stroke="#3ecf6e" stroke-width="2"/>
-              </svg>
-              <img src="images/ethereum_logo.png" alt="Sample Logo">
-            </div>
-            <div class="logo-text">
-              <span class="logo-name">BRAND</span>
-              <span class="logo-sub">NAME</span>
-            </div>
-          </div> -->
-          <p class="presentation-heading">CATEGORY · SERIES · EVENT NAME</p>
-
-          <div class="title-main">
-            <h1 class="presentation-title">Presentation Title Goes Here</h1>
-            <p class="presentation-subtitle">A short subtitle describing what this presentation is about</p>
-            <div class="title-divider"></div>
-          </div>
-
-          <div class="title-meta">
-            <div class="meta-left">
-              <p class="meta-name">Presenter Name</p>
-              <p class="meta-dept">Role / Affiliation</p>
-            </div>
-            <div class="meta-right">
-              <p class="meta-date">August 7, 2026</p>
-            </div>
-          </div>
-        </div>
+      <!-- Title slide -->
+      <section class="centered no-footer">
+        <img class="logo" src="/images/logo.svg" data-dark-src="/images/logo-dark.svg" alt="" />
+        <h1>Presentation Title Goes Here</h1>
+        <p class="lede">A one-line subtitle that says what this talk is about</p>
+        <p class="meta"><strong>Presenter Name</strong>, Role at Organisation<br />Event Name in October 2026</p>
+        <aside class="notes">
+          Speaker notes live in an aside like this one. Press S to open the speaker view.
+        </aside>
       </section>
 
-      <!-- Slide: Agenda -->
-      <section id="agenda" class="slide-dark" data-background-image="/images/background.png" data-background-size="cover" data-background-position="center">
-        <div class="slide-overlay">
-          <h2 class="slide-heading">Agenda</h2>
-          <div class="agenda-container">
-            <div class="agenda-grid">
-              <div class="agenda-tile glass-panel">
-                <span class="agenda-tile-num">01</span>
-                <span class="agenda-tile-label">Section One</span>
-              </div>
-              <div class="agenda-tile glass-panel">
-                <span class="agenda-tile-num">02</span>
-                <span class="agenda-tile-label">Section Two</span>
-              </div>
-            </div>
-          </div>
-          <div class="slide-footer">
-            <div class="footer-logo">
-              <svg width="18" height="18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="2" y="2" width="28" height="28" rx="4" stroke="#3ecf6e" stroke-width="2" fill="none"/>
-                <path d="M8 24 L16 8 L24 24" stroke="#3ecf6e" stroke-width="2" fill="none"/>
-                <line x1="10" y1="20" x2="22" y2="20" stroke="#3ecf6e" stroke-width="2"/>
-              </svg>
-              <span>YOUR BRAND</span>
-            </div>
-            <span class="slide-number"></span>
-          </div>
-        </div>
+      <!-- Agenda -->
+      <section id="agenda">
+        <h2>Agenda</h2>
+        <ol class="rows rows--numbered">
+          <li><span class="row-num">01</span><span class="row-title">Text &amp; layout</span><span class="row-text">Typography, lists, images, quotes and Markdown</span></li>
+          <li><span class="row-num">02</span><span class="row-title">Code</span><span class="row-text">Syntax highlighting, line steps and shell sessions</span></li>
+          <li><span class="row-num">03</span><span class="row-title">Mathematics</span><span class="row-text">Inline and display LaTeX with derivations</span></li>
+          <li><span class="row-num">04</span><span class="row-title">Data</span><span class="row-text">Tables, charts, numbers, options and timelines</span></li>
+          <li><span class="row-num">05</span><span class="row-title">Extras</span><span class="row-text">Fragments, auto-animate and speaker notes</span></li>
+        </ol>
       </section>
 
-      <!-- Section 1: horizontal top-level slide, vertical subsections scroll within it -->
+      <!-- Section 1, Text & layout -->
+      <section class="divider">
+        <p class="divider-num">01</p>
+        <h2>Text &amp; layout</h2>
+        <p class="lede">Typography, lists, images, quotes and Markdown slides.</p>
+      </section>
+
+      <!-- Typography -->
       <section>
+        <h2>Typography</h2>
+        <div class="cols cols--wide-left">
+          <div class="flow flow--loose">
+            <p class="lede">Use <strong>strong</strong> for emphasis, <em>italics</em> sparingly, <code>inline code</code> for identifiers and <a href="https://revealjs.com">underlined links</a> for references.</p>
+            <p>Body copy is a quiet grey, still above the 4.5:1 contrast minimum <a class="cite" href="#/references">[1]</a>, so headings and figures carry the hierarchy. Keep one idea per slide.</p>
+            <p class="caption">Caption text suits sources, footnotes and fine print.</p>
+          </div>
+          <div class="card card--compact">
+            <p class="caption">Type scale</p>
+            <h1>Display</h1>
+            <h3>Heading</h3>
+            <h5>Subheading</h5>
+            <p>Body text</p>
+            <p class="small">Small text</p>
+            <p class="small mono ink">code_text()</p>
+          </div>
+        </div>
+      </section>
 
-        <!-- Section 1: Agenda recap, current section highlighted -->
-        <section class="slide-dark" data-background-image="/images/background.png" data-background-size="cover" data-background-position="center">
-          <div class="slide-overlay">
-            <h2 class="slide-heading">Agenda</h2>
-            <div class="agenda-container">
-              <div class="agenda-grid">
-                <div class="agenda-tile glass-panel agenda-tile--active">
-                  <span class="agenda-tile-num">01</span>
-                  <span class="agenda-tile-label">Section One</span>
-                </div>
-                <div class="agenda-tile glass-panel agenda-tile--dim">
-                  <span class="agenda-tile-num">02</span>
-                  <span class="agenda-tile-label">Section Two</span>
-                </div>
-              </div>
-            </div>
-            <div class="slide-footer">
-              <div class="footer-logo">
-                <svg width="18" height="18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="2" y="2" width="28" height="28" rx="4" stroke="#3ecf6e" stroke-width="2" fill="none"/>
-                  <path d="M8 24 L16 8 L24 24" stroke="#3ecf6e" stroke-width="2" fill="none"/>
-                  <line x1="10" y1="20" x2="22" y2="20" stroke="#3ecf6e" stroke-width="2"/>
-                </svg>
-                <span>YOUR BRAND</span>
-              </div>
-              <span class="slide-number"></span>
+      <!-- Lists & fragments -->
+      <section>
+        <h2>Lists</h2>
+        <div class="cols cols--3">
+          <div class="flow">
+            <h5>Bullets, one by one</h5>
+            <ul>
+              <li class="fragment">Short, parallel points</li>
+              <li class="fragment">One line each
+                <ul><li>Nested detail sits here</li></ul>
+              </li>
+              <li class="fragment">Press → to reveal</li>
+            </ul>
+          </div>
+          <div class="flow">
+            <h5>Numbered</h5>
+            <ol>
+              <li>Define the problem</li>
+              <li>Measure the baseline</li>
+              <li>Ship the smallest fix</li>
+            </ol>
+          </div>
+          <div class="flow">
+            <h5>Checklist</h5>
+            <ul class="checks">
+              <li>Works offline</li>
+              <li>Exports to PDF</li>
+              <li>One file for the theme</li>
+              <li>Speaker notes built in</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Text beside an image -->
+      <section>
+        <h2>Text beside an image</h2>
+        <div class="cols cols--wide-right cols--stretch fill">
+          <div class="flow flow--loose">
+            <p class="lede">Pair one short claim with one supporting visual.</p>
+            <ul class="checks">
+              <li>Put images in <code>public/images</code></li>
+              <li>Reference them as <code>/images/name.png</code></li>
+              <li>Any aspect ratio is cropped to fit</li>
+            </ul>
+            <div class="row">
+              <a class="pill" href="#/agenda">Primary</a>
+              <a class="pill pill--secondary" href="https://revealjs.com">Secondary</a>
             </div>
           </div>
-        </section>
+          <figure class="figure">
+            <img src="/images/placeholder.svg" data-dark-src="/images/placeholder-dark.svg" alt="Placeholder illustration" />
+            <figcaption>A caption tells the reader what to notice.</figcaption>
+          </figure>
+        </div>
+      </section>
 
-        <!-- Section 1: Content with image and bullets -->
-        <section class="slide-dark" data-background-image="/images/background.png" data-background-size="cover" data-background-position="center">
-          <div class="title-overlay">
-            <h2 class="slide-heading">Slide Title Goes Here</h2>
-            <div class="content-underline"></div>
-            <div class="content-two-col">
-              <div class="content-text">
-                <p class="body-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                <div class="bullet-points">
-                  <div class="bullet-item glass-panel">
-                    <div class="bullet-icon">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3ecf6e" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-                    </div>
-                    <div>
-                      <p class="bullet-title">Point One</p>
-                      <p class="bullet-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    </div>
-                  </div>
-                  <div class="bullet-item glass-panel">
-                    <div class="bullet-icon">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3ecf6e" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-                    </div>
-                    <div>
-                      <p class="bullet-title">Point Two</p>
-                      <p class="bullet-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    </div>
-                  </div>
-                  <div class="bullet-item glass-panel">
-                    <div class="bullet-icon">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3ecf6e" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-                    </div>
-                    <div>
-                      <p class="bullet-title">Point Three</p>
-                      <p class="bullet-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="content-image glass-panel">
-                <img src="/images/background.png" alt="Supporting visual" />
-              </div>
-            </div>
-            <div class="slide-footer">
-              <div class="footer-logo">
-                <svg width="18" height="18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="2" y="2" width="28" height="28" rx="4" stroke="#3ecf6e" stroke-width="2" fill="none"/>
-                  <path d="M8 24 L16 8 L24 24" stroke="#3ecf6e" stroke-width="2" fill="none"/>
-                  <line x1="10" y1="20" x2="22" y2="20" stroke="#3ecf6e" stroke-width="2"/>
-                </svg>
-                <span>YOUR BRAND</span>
-              </div>
-              <span class="slide-number"></span>
-            </div>
-          </div>
-        </section>
+      <!-- Quote -->
+      <section class="middle">
+        <blockquote>
+          <p>“Put the one line you want the audience to repeat after the talk here.”</p>
+          <footer>Author Name, Source or Context</footer>
+        </blockquote>
+      </section>
 
-        <!-- Section 1: Chart + Key Takeaway -->
-        <section class="slide-dark" data-background-image="/images/background.png" data-background-size="cover" data-background-position="center">
-          <div class="dark-overlay glass-panel">
-            <h2 class="slide-heading">Slide Title Goes Here</h2>
-            <div class="content-underline"></div>
-            <div class="chart-layout">
-              <div class="chart-container glass-panel">
-                <canvas id="barChart"></canvas>
-                <div class="chart-legend">
-                  <span class="legend-dot" style="background:#3ecf6e"></span> Series 1
-                  <span class="legend-dot" style="background:#4a7fc1"></span> Series 2
-                  <span class="legend-dot" style="background:#5bbddf"></span> Series 3
-                </div>
-              </div>
-              <div class="takeaway-box glass-panel">
-                <p class="takeaway-title">Key Takeaway</p>
-                <p class="takeaway-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-              </div>
-            </div>
-            <div class="slide-footer">
-              <div class="footer-logo">
-                <svg width="18" height="18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="2" y="2" width="28" height="28" rx="4" stroke="#3ecf6e" stroke-width="2" fill="none"/>
-                  <path d="M8 24 L16 8 L24 24" stroke="#3ecf6e" stroke-width="2" fill="none"/>
-                  <line x1="10" y1="20" x2="22" y2="20" stroke="#3ecf6e" stroke-width="2"/>
-                </svg>
-                <span>YOUR BRAND</span>
-              </div>
-              <span class="slide-number"></span>
-            </div>
-          </div>
-        </section>
+      <!-- Markdown slide -->
+      <section data-markdown>
+        <textarea data-template>
+          ## Written in Markdown
 
-        <!-- Section 1: Code -->
-        <section class="slide-dark" data-background-image="/images/background.png" data-background-size="cover" data-background-position="center">
-          <div class="dark-overlay glass-panel">
-            <h2 class="slide-heading">Code Example</h2>
-            <div class="content-underline"></div>
-            <div class="code-panel glass-panel">
-              <pre><code data-trim data-noescape data-line-numbers="1|2-4|5">
-function example(input) {
-  const result = input
-    .filter(Boolean)
-    .map(item => item * 2);
-  return result;
+          Any slide can be written in **Markdown** instead of HTML.
+
+          - Lists, *emphasis* and `inline code`
+          - Links such as [the reveal.js docs](https://revealjs.com/markdown/) <a class="cite" href="#/references">[2]</a>
+          - Maths works here too, for example $e^{i\pi} + 1 = 0$ <!-- .element: class="fragment" -->
+
+          | Markdown     | Result     |
+          | ------------ | ---------- |
+          | `**bold**`   | **bold**   |
+          | `*italic*`   | *italic*   |
+
+          Note:
+          Speaker notes for a Markdown slide go after a line that reads "Note:".
+        </textarea>
+      </section>
+
+      <!-- Section 2, Code -->
+      <section class="divider">
+        <p class="divider-num">02</p>
+        <h2>Code</h2>
+        <p class="lede">Syntax highlighting, step-through line highlights and shell sessions.</p>
+      </section>
+
+      <!-- Code with line steps -->
+      <section>
+        <h2>Code, step by step</h2>
+        <p>Each range in <code>data-line-numbers</code> lights up on its own press of →.</p>
+        <div class="terminal">
+          <div class="terminal-bar"><span>load-users.js</span></div>
+          <!-- Raw code goes inside <script type="text/template">, so < and > need no escaping -->
+          <pre><code class="language-javascript" data-trim data-line-numbers="2|3-6|7-8"><script type="text/template">
+// Fetch users and keep only the fields we need
+async function loadUsers(url) {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Request failed: ${response.status}`);
+  }
+  const users = await response.json();
+  return users.map(({ id, name }) => ({ id, name }));
 }
-              </code></pre>
-            </div>
-            <div class="slide-footer">
-              <div class="footer-logo">
-                <svg width="18" height="18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="2" y="2" width="28" height="28" rx="4" stroke="#3ecf6e" stroke-width="2" fill="none"/>
-                  <path d="M8 24 L16 8 L24 24" stroke="#3ecf6e" stroke-width="2" fill="none"/>
-                  <line x1="10" y1="20" x2="22" y2="20" stroke="#3ecf6e" stroke-width="2"/>
-                </svg>
-                <span>YOUR BRAND</span>
-              </div>
-              <span class="slide-number"></span>
-            </div>
-          </div>
-        </section>
-
+          </script></code></pre>
+        </div>
       </section>
 
-      <!-- Section 2: horizontal top-level slide, vertical subsections scroll within it -->
+      <!-- Another language and a shell session -->
       <section>
+        <h2>Any language, plus shell sessions</h2>
+        <div class="cols">
+          <div class="terminal">
+            <div class="terminal-bar"><span>fib.py</span></div>
+            <pre><code class="language-python" data-trim>
+def fib(n: int) -> int:
+    a, b = 0, 1
+    for _ in range(n):
+        a, b = b, a + b
+    return a
 
-        <!-- Section 2: Agenda recap, current section highlighted -->
-        <section class="slide-dark" data-background-image="/images/background.png" data-background-size="cover" data-background-position="center">
-          <div class="slide-overlay">
-            <h2 class="slide-heading">Agenda</h2>
-            <div class="agenda-container">
-              <div class="agenda-grid">
-                <div class="agenda-tile glass-panel agenda-tile--dim">
-                  <span class="agenda-tile-num">01</span>
-                  <span class="agenda-tile-label">Section One</span>
-                </div>
-                <div class="agenda-tile glass-panel agenda-tile--active">
-                  <span class="agenda-tile-num">02</span>
-                  <span class="agenda-tile-label">Section Two</span>
-                </div>
-              </div>
-            </div>
-            <div class="slide-footer">
-              <div class="footer-logo">
-                <svg width="18" height="18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="2" y="2" width="28" height="28" rx="4" stroke="#3ecf6e" stroke-width="2" fill="none"/>
-                  <path d="M8 24 L16 8 L24 24" stroke="#3ecf6e" stroke-width="2" fill="none"/>
-                  <line x1="10" y1="20" x2="22" y2="20" stroke="#3ecf6e" stroke-width="2"/>
-                </svg>
-                <span>YOUR BRAND</span>
-              </div>
-              <span class="slide-number"></span>
-            </div>
+print([fib(i) for i in range(8)])
+            </code></pre>
           </div>
-        </section>
+          <div class="terminal">
+            <div class="terminal-bar"><span>zsh</span></div>
+<pre class="shell"><span class="prompt">$ </span>npm install
+<span class="prompt">$ </span>npm run dev
+<span class="output">  Local: http://localhost:5173/</span>
 
-        <!-- Section 2: Stat cards (another glassmorphic template) -->
-        <section class="slide-dark" data-background-image="/images/background.png" data-background-size="cover" data-background-position="center">
-          <div class="dark-overlay glass-panel">
-            <h2 class="slide-heading">Slide Title Goes Here</h2>
-            <div class="content-underline"></div>
-            <div class="stats-grid">
-              <div class="stat-card glass-panel">
-                <p class="stat-value">42%</p>
-                <p class="stat-label">Metric One</p>
-                <p class="stat-desc">Short description of what this metric represents.</p>
-              </div>
-              <div class="stat-card glass-panel">
-                <p class="stat-value">128</p>
-                <p class="stat-label">Metric Two</p>
-                <p class="stat-desc">Short description of what this metric represents.</p>
-              </div>
-              <div class="stat-card glass-panel">
-                <p class="stat-value">3.2x</p>
-                <p class="stat-label">Metric Three</p>
-                <p class="stat-desc">Short description of what this metric represents.</p>
-              </div>
-            </div>
-            <div class="slide-footer">
-              <div class="footer-logo">
-                <svg width="18" height="18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="2" y="2" width="28" height="28" rx="4" stroke="#3ecf6e" stroke-width="2" fill="none"/>
-                  <path d="M8 24 L16 8 L24 24" stroke="#3ecf6e" stroke-width="2" fill="none"/>
-                  <line x1="10" y1="20" x2="22" y2="20" stroke="#3ecf6e" stroke-width="2"/>
-                </svg>
-                <span>YOUR BRAND</span>
-              </div>
-              <span class="slide-number"></span>
-            </div>
+<span class="comment"># export every slide to a PDF</span>
+<span class="prompt">$ </span>npm run pdf</pre>
           </div>
-        </section>
-
-        <!-- Section 2: Code -->
-        <section class="slide-dark" data-background-image="/images/background.png" data-background-size="cover" data-background-position="center">
-          <div class="dark-overlay glass-panel">
-            <h2 class="slide-heading">Code Example</h2>
-            <div class="content-underline"></div>
-            <div class="code-panel glass-panel">
-              <pre><code data-trim data-noescape data-line-numbers="1|2-3|4">
-def example(items):
-    result = [x * 2 for x in items if x]
-    return result
-              </code></pre>
-            </div>
-            <div class="slide-footer">
-              <div class="footer-logo">
-                <svg width="18" height="18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="2" y="2" width="28" height="28" rx="4" stroke="#3ecf6e" stroke-width="2" fill="none"/>
-                  <path d="M8 24 L16 8 L24 24" stroke="#3ecf6e" stroke-width="2" fill="none"/>
-                  <line x1="10" y1="20" x2="22" y2="20" stroke="#3ecf6e" stroke-width="2"/>
-                </svg>
-                <span>YOUR BRAND</span>
-              </div>
-              <span class="slide-number"></span>
-            </div>
-          </div>
-        </section>
-
+        </div>
+        <div class="row">
+          <span class="tag">npm run dev</span>
+          <span class="tag">npm run build</span>
+          <span class="tag">npm run pdf</span>
+        </div>
       </section>
 
-      <!-- Slide: Timeline -->
-      <section class="slide-dark" data-background-image="/images/background.png" data-background-size="cover" data-background-position="center">
-        <div class="dark-overlay glass-panel">
-          <h2 class="slide-heading">Slide Title Goes Here</h2>
-          <div class="content-underline"></div>
-          <!-- Populated by renderTimeline() in import.js from the TIMELINE_ITEMS
-               array — add/remove/edit an entry there and the rail, dots, spacing
-               and scroll-reveal all regenerate to match; nothing here needs editing. -->
-          <div class="timeline-v-wrap">
-            <div class="timeline-v" id="timeline-v"></div>
+      <!-- Section 3, Mathematics -->
+      <section class="divider">
+        <p class="divider-num">03</p>
+        <h2>Mathematics</h2>
+        <p class="lede">Maths in TeX notation <a class="cite" href="#/references">[3]</a>, rendered by KaTeX <a class="cite" href="#/references">[4]</a> and built up step by step.</p>
+      </section>
+
+      <!-- LaTeX gallery -->
+      <section>
+        <h2>Mathematics with LaTeX</h2>
+        <p>Inline maths sits in a sentence, like \(e^{i\pi} + 1 = 0\) or \(\hat{\beta} = (X^\top X)^{-1} X^\top y\) for \(X \in \R^{n \times p}\).</p>
+        <div class="cols">
+          <div class="card card--compact">
+            <p class="caption">Display equation</p>
+            \[ \int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi} \]
           </div>
-          <div class="slide-footer">
-            <div class="footer-logo">
-              <svg width="18" height="18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="2" y="2" width="28" height="28" rx="4" stroke="#3ecf6e" stroke-width="2" fill="none"/>
-                <path d="M8 24 L16 8 L24 24" stroke="#3ecf6e" stroke-width="2" fill="none"/>
-                <line x1="10" y1="20" x2="22" y2="20" stroke="#3ecf6e" stroke-width="2"/>
-              </svg>
-              <span>YOUR BRAND</span>
-            </div>
-            <span class="slide-number"></span>
+          <div class="card card--compact">
+            <p class="caption">Aligned equations</p>
+            \[ \begin{aligned} \nabla \cdot \mathbf{E} &= \rho / \varepsilon_0 \\ \nabla \times \mathbf{B} &= \mu_0 \mathbf{J} + \mu_0 \varepsilon_0 \tfrac{\partial \mathbf{E}}{\partial t} \end{aligned} \]
+          </div>
+          <div class="card card--compact">
+            <p class="caption">Matrices</p>
+            \[ A = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \qquad \det A = -2 \]
+          </div>
+          <div class="card card--compact">
+            <p class="caption">Sums and cases</p>
+            \[ \sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}, \qquad |x| = \begin{cases} x & x \ge 0 \\ -x & x \lt 0 \end{cases} \]
           </div>
         </div>
       </section>
 
-      <!-- Slide: Closing -->
-      <section class="slide-title" data-background-image="/images/background.png" data-background-size="cover" data-background-position="center">
-        <div class="title-overlay">
-          <p class="presentation-heading">THANK YOU</p>
-          <div class="title-main">
-            <h1 class="presentation-title">Questions?</h1>
-            <p class="presentation-subtitle">Get in touch: name@example.com</p>
-            <div class="title-divider"></div>
+      <!-- Derivation with fragments -->
+      <section>
+        <h2>A derivation, one step at a time</h2>
+        <div class="derivation">
+          <div><span>\[ ax^2 + bx + c = 0 \]</span><span class="note">Start from the quadratic</span></div>
+          <div class="fragment"><span>\[ x^2 + \tfrac{b}{a}\,x = -\tfrac{c}{a} \]</span><span class="note">Divide by \(a\)</span></div>
+          <div class="fragment"><span>\[ \Bigl(x + \frac{b}{2a}\Bigr)^2 = \frac{b^2 - 4ac}{4a^2} \]</span><span class="note">Complete the square</span></div>
+          <div class="fragment"><span>\[ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} \]</span><span class="note">Take the square root</span></div>
+        </div>
+        <aside class="notes">
+          Each row is a fragment, so the derivation builds up as you press →.
+        </aside>
+      </section>
+
+      <!-- Section 4, Data -->
+      <section class="divider">
+        <p class="divider-num">04</p>
+        <h2>Data</h2>
+        <p class="lede">Tables, charts, key numbers, comparisons and timelines.</p>
+      </section>
+
+      <!-- Table (no-math keeps the $ signs as plain text) -->
+      <section>
+        <h2>Tables</h2>
+        <p>Hairline rows, tabular figures and right-aligned numbers keep the ink on the data <a class="cite" href="#/references">[5]</a>. Mark the row that matters.</p>
+        <table class="no-math">
+          <thead>
+            <tr><th>Approach</th><th>Setup</th><th class="num">Latency (ms)</th><th class="num">Monthly cost</th><th class="num">Score</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Baseline</td><td>Single server</td><td class="num">240</td><td class="num">$120</td><td class="num">0.71</td></tr>
+            <tr><td>Cached</td><td>Server + cache</td><td class="num">95</td><td class="num">$160</td><td class="num">0.78</td></tr>
+            <tr><td>Scaled out</td><td>Four servers</td><td class="num">80</td><td class="num">$480</td><td class="num">0.80</td></tr>
+            <tr class="is-marked"><td>Proposed</td><td>Two servers + cache</td><td class="num">62</td><td class="num">$260</td><td class="num">0.86</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Charts. Their data and options live in CHARTS in import.js -->
+      <section>
+        <h2>Charts</h2>
+        <div class="cols">
+          <div class="card card--compact">
+            <h5>Quarterly results</h5>
+            <div class="chart"><canvas data-chart="quarterly" role="img" aria-label="Bar chart of this year against last year, ahead in every quarter and rising from 42 to 86"></canvas></div>
           </div>
-          <div class="title-meta">
-            <div class="meta-left">
-              <p class="meta-name">Presenter Name</p>
-              <p class="meta-dept">Role / Affiliation</p>
-            </div>
-            <div class="meta-right">
-              <p class="meta-date">August 7, 2026</p>
-            </div>
+          <div class="card card--compact">
+            <h5>Monthly trend against target</h5>
+            <div class="chart"><canvas data-chart="trend" role="img" aria-label="Line chart of the measured value rising from 12 to 48, close to a target line that rises from 15 to 50"></canvas></div>
           </div>
+        </div>
+        <p class="caption">Bars and lines show values by position, the encoding people judge most accurately <a class="cite" href="#/references">[6]</a>.</p>
+      </section>
+
+      <!-- Key numbers -->
+      <section>
+        <h2>Key numbers</h2>
+        <div class="stats no-math">
+          <div class="stat">
+            <p class="figure-value">42%</p>
+            <p class="stat-label">Faster onboarding</p>
+            <p class="stat-text">Median time to first result, compared with last quarter.</p>
+          </div>
+          <div class="stat">
+            <p class="figure-value">$1.2M</p>
+            <p class="stat-label">Annual savings</p>
+            <p class="stat-text">Infrastructure and support costs combined.</p>
+          </div>
+          <div class="stat">
+            <p class="figure-value">3.2×</p>
+            <p class="stat-label">Throughput</p>
+            <p class="stat-text">Requests served per server at peak load.</p>
+          </div>
+        </div>
+        <div class="strip">
+          <span>Tell the audience what to do with these numbers.</span>
+          <span class="pill pill--on-dark">Next step</span>
+        </div>
+      </section>
+
+      <!-- Comparison cards. data-select makes them clickable: one card at a
+           time can be selected. Add class="is-selected" to a card to start
+           with it selected (it also shows that way in the PDF). -->
+      <section>
+        <h2>Comparing options</h2>
+        <div class="cols cols--3 cols--stretch" data-select>
+          <div class="card">
+            <h4>Option A</h4>
+            <p class="small">Keep the current setup.</p>
+            <p class="figure-value">Low <small>effort</small></p>
+            <hr />
+            <ul class="checks">
+              <li>No migration needed</li>
+              <li>Known running costs</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Option B</h4>
+            <p class="small">Rebuild from scratch.</p>
+            <p class="figure-value">High <small>effort</small></p>
+            <hr />
+            <ul class="checks">
+              <li>Clean architecture</li>
+              <li>Longest time to value</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Option C</h4>
+            <p class="small">Migrate step by step.</p>
+            <p class="figure-value">Medium <small>effort</small></p>
+            <hr />
+            <ul class="checks">
+              <li>Value in the first month</li>
+              <li>Reversible at each step</li>
+            </ul>
+          </div>
+        </div>
+        <aside class="notes">
+          Click an option to select it while you talk about it; click it again to clear the selection.
+        </aside>
+      </section>
+
+      <!-- Timeline. One continuous timeline, two steps in view at a time. The
+           first two steps are on the slide from the start; the others are
+           fragments: each press of → (or ↓) grows the rail, adds a dot and
+           brings in its text, and the list glides up to keep the newest two
+           steps in view. Add or remove <li> items freely. -->
+      <section>
+        <h2>Timeline</h2>
+        <p class="lede">Each press of → adds the next step to the timeline.</p>
+        <div class="timeline-window fill">
+          <ol class="timeline">
+            <li class="is-done"><span class="timeline-date">Q1 2026</span><h5>Discover</h5><p>Interview users and map the current process.</p></li>
+            <li class="is-done"><span class="timeline-date">Q2 2026</span><h5>Design</h5><p>Prototype and test the riskiest ideas first.</p></li>
+            <li class="fragment custom"><span class="timeline-date">Q3 2026</span><h5>Build</h5><p>Ship in small, reviewable increments.</p></li>
+            <li class="fragment custom"><span class="timeline-date">Q4 2026</span><h5>Launch</h5><p>Roll out gradually and watch the metrics.</p></li>
+            <li class="fragment custom"><span class="timeline-date">Q1 2027</span><h5>Review</h5><p>Measure the outcome against the goal.</p></li>
+            <li class="fragment custom"><span class="timeline-date">Q2 2027</span><h5>Scale</h5><p>Grow what worked and retire what did not.</p></li>
+          </ol>
+        </div>
+        <aside class="notes">
+          Press → or ↓ to add each step, and ← or ↑ to take the last one away again.
+        </aside>
+      </section>
+
+      <!-- Section 5, Extras. It is a vertical stack, so press ↓ to move down -->
+      <section>
+
+        <section class="divider">
+          <p class="divider-num">05</p>
+          <h2>Extras</h2>
+          <p class="lede">This section is a vertical stack. Press ↓ to go down or → to skip ahead.</p>
+        </section>
+
+        <!-- Fragment styles -->
+        <section>
+          <h2>Fragment styles</h2>
+          <p>Add <code>class="fragment"</code> plus an optional style to reveal anything step by step.</p>
+          <div class="cols cols--3">
+            <div class="card card--compact fragment"><h5>fade-in</h5><p class="small">The default</p></div>
+            <div class="card card--compact fragment fade-up"><h5>fade-up</h5><p class="small">Slides in from below</p></div>
+            <div class="card card--compact fragment fade-down"><h5>fade-down</h5><p class="small">Slides in from above</p></div>
+            <div class="card card--compact fragment fade-left"><h5>fade-left</h5><p class="small">Slides in from the right</p></div>
+            <div class="card card--compact fragment semi-fade-out"><h5>semi-fade-out</h5><p class="small">Dims to half when stepped</p></div>
+            <div class="card card--compact"><h5 class="fragment strike">strike</h5><p class="small">Crosses out text</p></div>
+          </div>
+        </section>
+
+        <!-- Auto-animate morphs elements with the same data-id between the two slides -->
+        <section data-auto-animate>
+          <h2>Auto-animate</h2>
+          <p>Two adjacent slides with <code>data-auto-animate</code> morph matching elements.</p>
+          <div class="row">
+            <div class="box" data-id="box-a">A</div>
+            <div class="box" data-id="box-b">B</div>
+            <div class="box box--dark" data-id="box-c">C</div>
+          </div>
+        </section>
+        <section data-auto-animate>
+          <h2>Auto-animate</h2>
+          <p>Elements are matched by <code>data-id</code>, then their size and position animate.</p>
+          <div class="row" style="justify-content: space-between; align-items: flex-end;">
+            <div class="box box--dark" data-id="box-c" style="width: 420px; height: 260px;">C</div>
+            <div class="box" data-id="box-b" style="width: 200px; height: 200px;">B</div>
+            <div class="box" data-id="box-a" style="width: 100px; height: 100px;">A</div>
+          </div>
+        </section>
+
+        <!-- Keyboard shortcuts -->
+        <section>
+          <h2>Presenting</h2>
+          <ul class="rows rows--numbered">
+            <li><span class="tag">S</span><span class="row-title">Speaker view</span><span class="row-text">Notes, timer and the next slide</span></li>
+            <li><span class="tag">Esc</span><span class="row-title">Overview</span><span class="row-text">Every slide on one screen</span></li>
+            <li><span class="tag">F</span><span class="row-title">Full screen</span><span class="row-text">Press Esc to leave</span></li>
+            <li><span class="tag">B</span><span class="row-title">Black screen</span><span class="row-text">Pause and take questions</span></li>
+            <li><span class="tag">←↑→↓</span><span class="row-title">Navigate</span><span class="row-text">Space also moves forward</span></li>
+          </ul>
+          <aside class="notes">
+            You are reading the speaker notes. The speaker view also shows a timer and the next slide.
+          </aside>
+        </section>
+
+      </section>
+
+      <!-- FAQ -->
+      <section>
+        <h2>Questions people usually ask</h2>
+        <ul class="rows">
+          <li>
+            <p class="row-title">How do I change the colours or fonts?</p>
+            <p class="row-text">Edit the tokens in <code>style.css</code>, or start with <code>npm run dev:dark</code> for the dark theme.</p>
+          </li>
+          <li>
+            <p class="row-title">How do I get a PDF?</p>
+            <p class="row-text">Run <code>npm run pdf</code>. The file lands in the project root as <code>slides.pdf</code>.</p>
+          </li>
+          <li>
+            <p class="row-title">Can I write slides in Markdown?</p>
+            <p class="row-text">Yes. Put the Markdown in a <code>data-markdown</code> section, like the “Written in Markdown” slide.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Acknowledgements -->
+      <section id="acknowledgements">
+        <h2>Acknowledgements</h2>
+        <div class="cols cols--3">
+          <div class="flow">
+            <h5>People</h5>
+            <ul class="credits">
+              <li><strong>Name Surname</strong>Reviewed early drafts of this talk</li>
+              <li><strong>Name Surname</strong>Shared the data behind the charts</li>
+              <li><strong>Name Surname</strong>Gave feedback at the rehearsal</li>
+            </ul>
+          </div>
+          <div class="flow">
+            <h5>Organisations</h5>
+            <ul class="credits">
+              <li><strong>Team or Lab Name</strong>Hosted the user interviews</li>
+              <li><strong>Event Name 2026</strong>Invited and hosted this talk</li>
+            </ul>
+          </div>
+          <div class="flow">
+            <h5>Funding</h5>
+            <ul class="credits">
+              <li><strong>Funder Name</strong>Supported this work under grant ABC-123456</li>
+            </ul>
+            <h5>Built with</h5>
+            <p class="small">reveal.js <a class="cite" href="#/references">[2]</a> and KaTeX <a class="cite" href="#/references">[4]</a>, with Chart.js and highlight.js.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- References, in IEEE style: numbered in the order sources are first
+           cited, with titles of books, standards and software in <cite>.
+           Cite a source on any slide with <a class="cite" href="#/references">[1]</a>. -->
+      <section id="references">
+        <h2>References</h2>
+        <ol class="references">
+          <li>W3C, <cite>Web Content Accessibility Guidelines (WCAG) 2.2</cite>, W3C Recommendation, Oct. 2023. [Online]. Available: <a href="https://www.w3.org/TR/WCAG22/">https://www.w3.org/TR/WCAG22/</a></li>
+          <li>H. El Hattab, <cite>reveal.js: The HTML Presentation Framework</cite>, version 6.0.1. [Online]. Available: <a href="https://revealjs.com">https://revealjs.com</a></li>
+          <li>D. E. Knuth, <cite>The TeXbook</cite>. Reading, MA, USA: Addison-Wesley, 1984.</li>
+          <li>Khan Academy, <cite>KaTeX: The Fastest Math Typesetting Library for the Web</cite>, version 0.19.1. [Online]. Available: <a href="https://katex.org">https://katex.org</a></li>
+          <li>E. R. Tufte, <cite>The Visual Display of Quantitative Information</cite>, 2nd ed. Cheshire, CT, USA: Graphics Press, 2001.</li>
+          <li>W. S. Cleveland and R. McGill, “Graphical perception: Theory, experimentation, and application to the development of graphical methods,” <cite>J. Amer. Statist. Assoc.</cite>, vol. 79, no. 387, pp. 531–554, Sep. 1984, doi: <a href="https://doi.org/10.1080/01621459.1984.10478080">10.1080/01621459.1984.10478080</a>.</li>
+        </ol>
+      </section>
+
+      <!-- Closing slide -->
+      <section class="centered no-footer">
+        <img class="logo" src="/images/logo.svg" data-dark-src="/images/logo-dark.svg" alt="" />
+        <h1>Thank you</h1>
+        <p class="lede">Questions, comments and ideas are welcome.</p>
+        <div class="snippet">git clone https://example.com/your-name/your-talk.git</div>
+        <div class="row">
+          <a class="pill" href="mailto:name@example.com">name@example.com</a>
+          <a class="pill pill--secondary" href="https://example.com">example.com</a>
         </div>
       </section>
 
     </div>
   </div>
 
-  <script type="module" src="import.js"></script>
+  <script type="module" src="/import.js"></script>
 </body>
 </html>
