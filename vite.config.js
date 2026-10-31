@@ -11,6 +11,14 @@ export default defineConfig(({ mode }) => {
       // reveal.js, highlight.js, KaTeX and Chart.js are bundled so the deck
       // runs offline; a ~1.6 MB script is expected for a presentation.
       chunkSizeWarningLimit: 2000,
+      // Two decks: the talk (index.html) and the template's example slides
+      // (examples.html, served at /examples.html)
+      rollupOptions: {
+        input: {
+          main: 'index.html',
+          examples: 'examples.html',
+        },
+      },
     },
   };
 });

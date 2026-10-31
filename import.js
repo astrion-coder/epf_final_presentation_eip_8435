@@ -5,6 +5,7 @@ import Notes from 'reveal.js/plugin/notes';
 import renderMathInElement from 'katex/contrib/auto-render';
 import { addBackdrop } from './backdrop.js';
 import { addCursor } from './cursor.js';
+import { addBars } from './bars.js';
 import {
   Chart, BarController, BarElement, LineController, LineElement, PointElement,
   CategoryScale, LinearScale, Legend, Tooltip,
@@ -91,6 +92,7 @@ window.Reveal = deck;
 
 deck.initialize().then(() => {
   addFooters();
+  addBars(deck);
   bindSnippets();
   bindSelectableCards();
   bindTimelines();
@@ -213,14 +215,28 @@ function bindTimelines() {
 // ─── Selectable cards ──────────────────────────────────────────
 // In a group marked data-select, clicking a card selects it and clears
 // the others; clicking the selected card again clears it. The look is
-// .card.is-selected in style.css.
+// .card.is-selected in style.css. A card with data-highlight="name" also
+// lights up the elements with data-part="name" on its slide (such as
+// nodes in a diagram) while it is selected, in the card's colour.
 function bindSelectableCards() {
   document.querySelectorAll('[data-select]').forEach((group) => {
     const cards = [...group.querySelectorAll(':scope > .card')];
+    const slide = group.closest('section');
+    const parts = (card) => (card.dataset.highlight
+      ? slide.querySelectorAll(`[data-part="${card.dataset.highlight}"]`)
+      : []);
     cards.forEach((card) => {
       card.addEventListener('click', () => {
         const select = !card.classList.contains('is-selected');
-        cards.forEach((other) => other.classList.toggle('is-selected', select && other === card));
+        cards.forEach((other) => {
+          const on = select && other === card;
+          const colour = getComputedStyle(other).getPropertyValue('--card-accent').trim();
+          other.classList.toggle('is-selected', on);
+          parts(other).forEach((part) => {
+            if (colour) part.style.setProperty('--highlight', colour);
+            part.classList.toggle('is-highlighted', on);
+          });
+        });
       });
     });
   });

@@ -3,468 +3,560 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Presentation Title</title>
+  <title>EIP-8435</title>
   <link rel="icon" href="/favicon.ico" />
 </head>
 <body>
-  <!-- data-footer is the text on the left of every slide footer. The other
-       attributes each turn on one effect; delete any to turn it off:
-       data-backdrop  the animated art behind the slides
-       data-cursor    the iPad-style pointer -->
-  <div class="reveal" data-footer="Presentation Title at Event Name 2026" data-backdrop data-cursor>
+  <!-- EIP-8435 final presentation, Ethereum Protocol Fellowship Cohort 7.
+       The template's example slides are in examples.html (/examples.html).
+       data-footer is the text on the left of every slide footer; the other
+       attributes turn on the animated backdrop and the custom pointer. -->
+  <div class="reveal" data-footer="EIP-8435 at the Ethereum Protocol Fellowship" data-backdrop data-cursor>
     <div class="slides">
 
       <!-- Title slide -->
       <section class="centered no-footer">
-        <img class="logo" src="/images/logo.svg" data-dark-src="/images/logo-dark.svg" alt="" />
-        <h1>Presentation Title Goes Here</h1>
-        <p class="lede">A one-line subtitle that says what this talk is about</p>
-        <p class="meta"><strong>Presenter Name</strong>, Role at Organisation<br />Event Name in October 2026</p>
-        <aside class="notes">
-          Speaker notes live in an aside like this one. Press S to open the speaker view.
-        </aside>
+        <img class="logo" src="/images/ethereum_logo.png" alt="logo">
+        <p class="label">Ethereum Protocol Fellowship, Cohort 7</p>
+        <h1 class="hero">EIP-8435</h1>
+        <p class="lede">Write-age metadata for the Partitioned Binary Tree, with <code>last_written_block</code> in every leaf</p>
+        <p class="meta">Final presentation by <strong>Astrion</strong>, mentored by <strong>Wei Han Ng</strong></p>
       </section>
 
-      <!-- Agenda -->
-      <section id="agenda">
-        <h2>Agenda</h2>
-        <ol class="rows rows--numbered">
-          <li><span class="row-num">01</span><span class="row-title">Text &amp; layout</span><span class="row-text">Typography, lists, images, quotes and Markdown</span></li>
-          <li><span class="row-num">02</span><span class="row-title">Code</span><span class="row-text">Syntax highlighting, line steps and shell sessions</span></li>
-          <li><span class="row-num">03</span><span class="row-title">Mathematics</span><span class="row-text">Inline and display LaTeX with derivations</span></li>
-          <li><span class="row-num">04</span><span class="row-title">Data</span><span class="row-text">Tables, charts, numbers, options and timelines</span></li>
-          <li><span class="row-num">05</span><span class="row-title">Extras</span><span class="row-text">Fragments, auto-animate and speaker notes</span></li>
-        </ol>
-      </section>
-
-      <!-- Section 1, Text & layout -->
-      <section class="divider">
-        <p class="divider-num">01</p>
-        <h2>Text &amp; layout</h2>
-        <p class="lede">Typography, lists, images, quotes and Markdown slides.</p>
-      </section>
-
-      <!-- Typography -->
+      <!-- Motivation -->
       <section>
-        <h2>Typography</h2>
-        <div class="cols cols--wide-left">
-          <div class="flow flow--loose">
-            <p class="lede">Use <strong>strong</strong> for emphasis, <em>italics</em> sparingly, <code>inline code</code> for identifiers and <a href="https://revealjs.com">underlined links</a> for references.</p>
-            <p>Body copy is a quiet grey, still above the 4.5:1 contrast minimum <a class="cite" href="#/references">[1]</a>, so headings and figures carry the hierarchy. Keep one idea per slide.</p>
-            <p class="caption">Caption text suits sources, footnotes and fine print.</p>
-          </div>
-          <div class="card card--compact">
-            <p class="caption">Type scale</p>
-            <h1>Display</h1>
-            <h3>Heading</h3>
-            <h5>Subheading</h5>
-            <p>Body text</p>
-            <p class="small">Small text</p>
-            <p class="small mono ink">code_text()</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Lists & fragments -->
-      <section>
-        <h2>Lists</h2>
-        <div class="cols cols--3">
+        <h2>Motivation</h2>
+        <div class="cols cols--middle fill">
           <div class="flow">
-            <h5>Bullets, one by one</h5>
-            <ul>
-              <li class="fragment">Short, parallel points</li>
-              <li class="fragment">One line each
-                <ul><li>Nested detail sits here</li></ul>
-              </li>
-              <li class="fragment">Press → to reveal</li>
-            </ul>
+            <p class="hero text-warm">80%</p>
+            <p class="lede">of Ethereum state has not been accessed in over a year</p>
           </div>
-          <div class="flow">
-            <h5>Numbered</h5>
-            <ol>
-              <li>Define the problem</li>
-              <li>Measure the baseline</li>
-              <li>Ship the smallest fix</li>
-            </ol>
-          </div>
-          <div class="flow">
-            <h5>Checklist</h5>
-            <ul class="checks">
-              <li>Works offline</li>
-              <li>Exports to PDF</li>
-              <li>One file for the theme</li>
-              <li>Speaker notes built in</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <!-- Text beside an image -->
-      <section>
-        <h2>Text beside an image</h2>
-        <div class="cols cols--wide-right cols--stretch fill">
-          <div class="flow flow--loose">
-            <p class="lede">Pair one short claim with one supporting visual.</p>
-            <ul class="checks">
-              <li>Put images in <code>public/images</code></li>
-              <li>Reference them as <code>/images/name.png</code></li>
-              <li>Any aspect ratio is cropped to fit</li>
-            </ul>
-            <div class="row">
-              <a class="pill" href="#/agenda">Primary</a>
-              <a class="pill pill--secondary" href="https://revealjs.com">Secondary</a>
+          <div class="card flow">
+            <div class="segbar segbar--slim" role="img" aria-label="20% of state is hot, 80% is cold">
+              <span data-size="20" class="seg--cool" data-tip="Hot state, 20%" data-tip-detail="Used in the last year">20%</span>
+              <span data-size="80" class="seg--warm" data-tip="Cold state, 80%" data-tip-detail="Idle for over a year">80%</span>
+            </div>
+            <div class="legend">
+              <span><i class="swatch"></i>Hot, used in the last year</span>
+              <span><i class="swatch swatch--warm"></i>Cold, idle for over a year</span>
             </div>
           </div>
-          <figure class="figure">
-            <img src="/images/placeholder.svg" data-dark-src="/images/placeholder-dark.svg" alt="Placeholder illustration" />
-            <figcaption>A caption tells the reader what to notice.</figcaption>
-          </figure>
         </div>
+        <p class="caption">Sources: EIP-8188 ACD slides, and “Not All State is Equal” on Ethereum Magicians.</p>
       </section>
 
-      <!-- Quote -->
-      <section class="middle">
-        <blockquote>
-          <p>“Put the one line you want the audience to repeat after the talk here.”</p>
-          <footer>Author Name, Source or Context</footer>
-        </blockquote>
-      </section>
-
-      <!-- Markdown slide -->
-      <section data-markdown>
-        <textarea data-template>
-          ## Written in Markdown
-
-          Any slide can be written in **Markdown** instead of HTML.
-
-          - Lists, *emphasis* and `inline code`
-          - Links such as [the reveal.js docs](https://revealjs.com/markdown/) <a class="cite" href="#/references">[2]</a>
-          - Maths works here too, for example $e^{i\pi} + 1 = 0$ <!-- .element: class="fragment" -->
-
-          | Markdown     | Result     |
-          | ------------ | ---------- |
-          | `**bold**`   | **bold**   |
-          | `*italic*`   | *italic*   |
-
-          Note:
-          Speaker notes for a Markdown slide go after a line that reads "Note:".
-        </textarea>
-      </section>
-
-      <!-- Section 2, Code -->
-      <section class="divider">
-        <p class="divider-num">02</p>
-        <h2>Code</h2>
-        <p class="lede">Syntax highlighting, step-through line highlights and shell sessions.</p>
-      </section>
-
-      <!-- Code with line steps -->
+      <!-- Where it started -->
       <section>
-        <h2>Code, step by step</h2>
-        <p>Each range in <code>data-line-numbers</code> lights up on its own press of →.</p>
-        <div class="terminal">
-          <div class="terminal-bar"><span>load-users.js</span></div>
-          <!-- Raw code goes inside <script type="text/template">, so < and > need no escaping -->
-          <pre><code class="language-javascript" data-trim data-line-numbers="2|3-6|7-8"><script type="text/template">
-// Fetch users and keep only the fields we need
-async function loadUsers(url) {
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`Request failed: ${response.status}`);
-  }
-  const users = await response.json();
-  return users.map(({ id, name }) => ({ id, name }));
-}
-          </script></code></pre>
-        </div>
-      </section>
+        <h2>Where it started</h2>
+        <div class="cols cols--wide-left cols--middle fill">
+          <svg class="diagram" viewBox="0 0 600 320" role="img" aria-label="One database with active and inactive subtrees, split into a hot state with stubs and a cold state">
+            <rect class="panel" x="1" y="10" width="200" height="300" rx="12" />
+            <text class="t-label" x="18" y="38">Current design</text>
+            <line class="edge" x1="101" y1="90" x2="41" y2="132" /><line class="edge edge--cool" x1="101" y1="90" x2="81" y2="132" />
+            <line class="edge edge--cool" x1="101" y1="90" x2="121" y2="132" /><line class="edge" x1="101" y1="90" x2="161" y2="132" />
+            <line class="edge" x1="41" y1="148" x2="29" y2="194" /><line class="edge" x1="41" y1="148" x2="53" y2="194" />
+            <line class="edge edge--cool" x1="81" y1="148" x2="69" y2="194" /><line class="edge edge--cool" x1="81" y1="148" x2="93" y2="194" />
+            <line class="edge edge--cool" x1="121" y1="148" x2="109" y2="194" /><line class="edge edge--cool" x1="121" y1="148" x2="133" y2="194" />
+            <line class="edge" x1="161" y1="148" x2="149" y2="194" /><line class="edge" x1="161" y1="148" x2="173" y2="194" />
+            <circle class="node--cool" cx="101" cy="80" r="10" />
+            <circle class="node--off" cx="41" cy="140" r="8" /><circle class="node--cool" cx="81" cy="140" r="8" />
+            <circle class="node--cool" cx="121" cy="140" r="8" /><circle class="node--off" cx="161" cy="140" r="8" />
+            <circle class="node--off" cx="29" cy="200" r="6" /><circle class="node--off" cx="53" cy="200" r="6" />
+            <circle class="node--cool" cx="69" cy="200" r="6" /><circle class="node--cool" cx="93" cy="200" r="6" />
+            <circle class="node--cool" cx="109" cy="200" r="6" /><circle class="node--cool" cx="133" cy="200" r="6" />
+            <circle class="node--off" cx="149" cy="200" r="6" /><circle class="node--off" cx="173" cy="200" r="6" />
+            <text x="41" y="234" text-anchor="middle">inactive</text>
+            <text x="101" y="234" text-anchor="middle" class="t-ink">active</text>
+            <text x="161" y="234" text-anchor="middle">inactive</text>
+            <text x="101" y="286" text-anchor="middle">All nodes in one DB</text>
 
-      <!-- Another language and a shell session -->
-      <section>
-        <h2>Any language, plus shell sessions</h2>
-        <div class="cols">
-          <div class="terminal">
-            <div class="terminal-bar"><span>fib.py</span></div>
-            <pre><code class="language-python" data-trim>
-def fib(n: int) -> int:
-    a, b = 0, 1
-    for _ in range(n):
-        a, b = b, a + b
-    return a
+            <polygon class="arrow" points="214,154 232,154 232,148 246,160 232,172 232,166 214,166" />
 
-print([fib(i) for i in range(8)])
-            </code></pre>
-          </div>
-          <div class="terminal">
-            <div class="terminal-bar"><span>zsh</span></div>
-<pre class="shell"><span class="prompt">$ </span>npm install
-<span class="prompt">$ </span>npm run dev
-<span class="output">  Local: http://localhost:5173/</span>
+            <rect class="panel" x="258" y="10" width="340" height="140" rx="12" />
+            <text class="t-label" x="274" y="38">Hot state</text>
+            <line class="edge dashed" x1="420" y1="56" x2="328" y2="87" /><line class="edge dashed" x1="436" y1="56" x2="528" y2="87" />
+            <line class="edge edge--cool" x1="428" y1="60" x2="388" y2="82" /><line class="edge edge--cool" x1="428" y1="60" x2="468" y2="82" />
+            <line class="edge edge--cool" x1="388" y1="94" x2="368" y2="120" /><line class="edge edge--cool" x1="388" y1="94" x2="408" y2="120" />
+            <line class="edge edge--cool" x1="468" y1="94" x2="448" y2="120" /><line class="edge edge--cool" x1="468" y1="94" x2="488" y2="120" />
+            <circle class="node--cool" cx="428" cy="52" r="9" />
+            <circle class="node--cool" cx="388" cy="88" r="7" /><circle class="node--cool" cx="468" cy="88" r="7" />
+            <circle class="node--cool" cx="368" cy="124" r="5" /><circle class="node--cool" cx="408" cy="124" r="5" />
+            <circle class="node--cool" cx="448" cy="124" r="5" /><circle class="node--cool" cx="488" cy="124" r="5" />
+            <rect class="d-box" x="276" y="74" width="52" height="26" rx="6" /><text x="302" y="92" text-anchor="middle">stub</text>
+            <rect class="d-box" x="528" y="74" width="52" height="26" rx="6" /><text x="554" y="92" text-anchor="middle">stub</text>
 
-<span class="comment"># export every slide to a PDF</span>
-<span class="prompt">$ </span>npm run pdf</pre>
+            <rect class="panel" x="258" y="170" width="340" height="140" rx="12" />
+            <text class="t-label" x="274" y="198">Cold state</text>
+            <line class="edge dashed" x1="436" y1="214" x2="528" y2="243" />
+            <line class="edge edge--warm" x1="428" y1="220" x2="398" y2="242" /><line class="edge edge--warm" x1="428" y1="220" x2="458" y2="242" />
+            <line class="edge edge--warm" x1="398" y1="254" x2="383" y2="280" /><line class="edge edge--warm" x1="398" y1="254" x2="413" y2="280" />
+            <line class="edge edge--warm" x1="458" y1="254" x2="443" y2="280" /><line class="edge edge--warm" x1="458" y1="254" x2="473" y2="280" />
+            <circle class="node--warm" cx="428" cy="212" r="9" />
+            <circle class="node--warm" cx="398" cy="248" r="7" /><circle class="node--warm" cx="458" cy="248" r="7" />
+            <circle class="node--warm" cx="383" cy="284" r="5" /><circle class="node--warm" cx="413" cy="284" r="5" />
+            <circle class="node--warm" cx="443" cy="284" r="5" /><circle class="node--warm" cx="473" cy="284" r="5" />
+            <rect class="d-box" x="528" y="230" width="52" height="26" rx="6" /><text x="554" y="248" text-anchor="middle">stub</text>
+          </svg>
+          <div class="flow">
+            <p class="label">The EPF plan</p>
+            <h4>State tiering in Reth with EIP-8188 and EIP-8295</h4>
+            <hr />
+            <p class="figure-value">5</p>
+            <p class="small"><code>reth db</code> commands on my fork, to backfill write age, find inactive subtrees and move them to a cold file</p>
+            <a class="small" href="https://github.com/astrion-coder/reth/tree/eip-8188">github.com/astrion-coder/reth</a>
           </div>
         </div>
-        <div class="row">
-          <span class="tag">npm run dev</span>
-          <span class="tag">npm run build</span>
-          <span class="tag">npm run pdf</span>
-        </div>
       </section>
 
-      <!-- Section 3, Mathematics -->
-      <section class="divider">
-        <p class="divider-num">03</p>
-        <h2>Mathematics</h2>
-        <p class="lede">Maths in TeX notation <a class="cite" href="#/references">[3]</a>, rendered by KaTeX <a class="cite" href="#/references">[4]</a> and built up step by step.</p>
-      </section>
-
-      <!-- LaTeX gallery -->
+      <!-- Why the pivot -->
       <section>
-        <h2>Mathematics with LaTeX</h2>
-        <p>Inline maths sits in a sentence, like \(e^{i\pi} + 1 = 0\) or \(\hat{\beta} = (X^\top X)^{-1} X^\top y\) for \(X \in \R^{n \times p}\).</p>
-        <div class="cols">
+        <h2>Why the pivot</h2>
+        <div class="steps" data-select>
           <div class="card card--compact">
-            <p class="caption">Display equation</p>
-            \[ \int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi} \]
+            <p class="label">Hegotá</p>
+            <h5>EIP-8188 was declined for inclusion</h5>
+            <p class="small">Declined for inclusion means the MPT version isn’t shipping in that fork.</p>
           </div>
+          <span class="steps-arrow" aria-hidden="true">→</span>
           <div class="card card--compact">
-            <p class="caption">Aligned equations</p>
-            \[ \begin{aligned} \nabla \cdot \mathbf{E} &= \rho / \varepsilon_0 \\ \nabla \times \mathbf{B} &= \mu_0 \mathbf{J} + \mu_0 \varepsilon_0 \tfrac{\partial \mathbf{E}}{\partial t} \end{aligned} \]
+            <p class="label">EIP-8297</p>
+            <h5>The switch to the PBT is expected</h5>
+            <p class="small">A new tree is coming, and every client will rebuild its state for it.</p>
           </div>
+          <span class="steps-arrow" aria-hidden="true">→</span>
           <div class="card card--compact">
-            <p class="caption">Matrices</p>
-            \[ A = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \qquad \det A = -2 \]
-          </div>
-          <div class="card card--compact">
-            <p class="caption">Sums and cases</p>
-            \[ \sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}, \qquad |x| = \begin{cases} x & x \ge 0 \\ -x & x \lt 0 \end{cases} \]
+            <p class="label">Wei Han’s suggestion</p>
+            <h5>Put the tiering metadata into the PBT</h5>
+            <p class="small">Design it into the new tree from the start, which became EIP-8435.</p>
           </div>
         </div>
+        <p class="caption push-down">Source: <a href="https://eips.ethereum.org/EIPS/eip-8081">EIP-8081, Hardfork Meta: Hegotá</a> (EIP-8188 listed as Declined for Inclusion)</p>
       </section>
 
-      <!-- Derivation with fragments -->
+      <!-- From MPT to PBT -->
       <section>
-        <h2>A derivation, one step at a time</h2>
-        <div class="derivation">
-          <div><span>\[ ax^2 + bx + c = 0 \]</span><span class="note">Start from the quadratic</span></div>
-          <div class="fragment"><span>\[ x^2 + \tfrac{b}{a}\,x = -\tfrac{c}{a} \]</span><span class="note">Divide by \(a\)</span></div>
-          <div class="fragment"><span>\[ \Bigl(x + \frac{b}{2a}\Bigr)^2 = \frac{b^2 - 4ac}{4a^2} \]</span><span class="note">Complete the square</span></div>
-          <div class="fragment"><span>\[ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} \]</span><span class="note">Take the square root</span></div>
-        </div>
-        <aside class="notes">
-          Each row is a fragment, so the derivation builds up as you press →.
-        </aside>
-      </section>
-
-      <!-- Section 4, Data -->
-      <section class="divider">
-        <p class="divider-num">04</p>
-        <h2>Data</h2>
-        <p class="lede">Tables, charts, key numbers, comparisons and timelines.</p>
-      </section>
-
-      <!-- Table (no-math keeps the $ signs as plain text) -->
-      <section>
-        <h2>Tables</h2>
-        <p>Hairline rows, tabular figures and right-aligned numbers keep the ink on the data <a class="cite" href="#/references">[5]</a>. Mark the row that matters.</p>
-        <table class="no-math">
+        <h2>From MPT to PBT</h2>
+        <p class="lede">EIP-8297 aims for blocks that can be proved, with small witnesses.</p>
+        <table>
           <thead>
-            <tr><th>Approach</th><th>Setup</th><th class="num">Latency (ms)</th><th class="num">Monthly cost</th><th class="num">Score</th></tr>
+            <tr><th></th><th><i class="swatch"></i>MPT today</th><th><i class="swatch swatch--warm"></i>PBT in EIP-8297</th></tr>
           </thead>
           <tbody>
-            <tr><td>Baseline</td><td>Single server</td><td class="num">240</td><td class="num">$120</td><td class="num">0.71</td></tr>
-            <tr><td>Cached</td><td>Server + cache</td><td class="num">95</td><td class="num">$160</td><td class="num">0.78</td></tr>
-            <tr><td>Scaled out</td><td>Four servers</td><td class="num">80</td><td class="num">$480</td><td class="num">0.80</td></tr>
-            <tr class="is-marked"><td>Proposed</td><td>Two servers + cache</td><td class="num">62</td><td class="num">$260</td><td class="num">0.86</td></tr>
+            <tr><th scope="row">Children</th><td>16 per node</td><td>2 per node</td></tr>
+            <tr><th scope="row">Encoding</th><td>RLP</td><td>Fixed byte offsets</td></tr>
+            <tr><th scope="row">Shape</th><td>A trie of tries</td><td>One tree for accounts, code and storage</td></tr>
+            <tr><th scope="row">Code</th><td>Outside the tree</td><td>Chunked in, shared by code hash</td></tr>
+            <tr><th scope="row">Hash</th><td>Keccak</td><td>Not final, BLAKE3 for now</td></tr>
           </tbody>
         </table>
       </section>
 
-      <!-- Charts. Their data and options live in CHARTS in import.js -->
+      <!-- Why binary -->
       <section>
-        <h2>Charts</h2>
+        <h2>Why binary</h2>
+        <div class="cols cols--wide-left cols--middle fill">
+          <div class="hbars" style="--max: 2880">
+            <div class="hbars-head"><span>Children</span><span>Proof branch size</span></div>
+            <div class="hbar hbar--warm" style="--value: 768" data-tip="2 children, the PBT" data-tip-detail="768 bytes per proof branch, 3.75× smaller than with 16">
+              <span class="hbar-label">2</span><span class="hbar-track"><span class="hbar-fill"></span><span class="hbar-value">768 B</span></span>
+            </div>
+            <div class="hbar" style="--value: 1152" data-tip="4 children" data-tip-detail="1,152 bytes per proof branch, 2.5× smaller than with 16">
+              <span class="hbar-label">4</span><span class="hbar-track"><span class="hbar-fill"></span><span class="hbar-value">1,152 B</span></span>
+            </div>
+            <div class="hbar" style="--value: 1792" data-tip="8 children" data-tip-detail="1,792 bytes per proof branch, 1.6× smaller than with 16">
+              <span class="hbar-label">8</span><span class="hbar-track"><span class="hbar-fill"></span><span class="hbar-value">1,792 B</span></span>
+            </div>
+            <div class="hbar hbar--cool" style="--value: 2880" data-tip="16 children, today’s MPT" data-tip-detail="2,880 bytes per proof branch">
+              <span class="hbar-label">16 (MPT)</span><span class="hbar-track"><span class="hbar-fill"></span><span class="hbar-value">2,880 B</span></span>
+            </div>
+          </div>
+          <div class="flow flow--tight">
+            <p class="hero text-warm">3.75×</p>
+            <p class="small">smaller branch than with 16 children</p>
+          </div>
+        </div>
+        <p class="caption">Average branch for \(2^{24}\) (about 16.8 million) leaves, from the rationale of EIP-8297.</p>
+      </section>
+
+      <!-- Two node types. Click a card to light up its nodes in the tree
+           (data-highlight on the card, data-part on the nodes). -->
+      <section>
+        <h2>Two node types</h2>
+        <div class="cols cols--middle fill">
+          <svg class="diagram diagram--large" viewBox="24 8 496 272" role="img" aria-label="A binary tree: the root branches by bit into account A's header and A's slots, which branch into four leaves">
+            <line class="edge edge--cool" x1="259" y1="44" x2="171" y2="112" /><line class="edge edge--cool" x1="281" y1="44" x2="369" y2="112" />
+            <text x="204" y="72" text-anchor="middle" class="t-ink">0</text><text x="336" y="72" text-anchor="middle" class="t-ink">1</text>
+            <circle class="ring--cool" cx="270" cy="32" r="16" data-part="branch" />
+            <text x="296" y="37">root, empty prefix</text>
+
+            <line class="edge edge--cool" x1="152" y1="138" x2="92" y2="214" /><line class="edge edge--cool" x1="168" y1="138" x2="212" y2="214" />
+            <line class="edge edge--cool" x1="372" y1="138" x2="328" y2="214" /><line class="edge edge--cool" x1="388" y1="138" x2="448" y2="214" />
+            <text x="110" y="180" text-anchor="middle" class="t-ink">0</text><text x="200" y="180" text-anchor="middle" class="t-ink">1</text>
+            <text x="340" y="180" text-anchor="middle" class="t-ink">0</text><text x="430" y="180" text-anchor="middle" class="t-ink">1</text>
+            <circle class="ring--cool" cx="160" cy="124" r="16" data-part="branch" />
+            <circle class="ring--cool" cx="380" cy="124" r="16" data-part="branch" />
+            <text x="134" y="118" text-anchor="end">account A’s</text><text x="134" y="136" text-anchor="end">header</text>
+            <text x="406" y="118">A’s slots</text><text x="406" y="136">768–1023</text>
+
+            <rect class="d-box--warm" x="36" y="214" width="112" height="56" rx="8" data-part="leaf" />
+            <text x="92" y="238" text-anchor="middle" class="t-ink">BASIC_DATA</text><text x="92" y="258" text-anchor="middle" class="t-mono t-warm">00 H(A) 00</text>
+            <rect class="d-box--warm" x="156" y="214" width="112" height="56" rx="8" data-part="leaf" />
+            <text x="212" y="238" text-anchor="middle" class="t-ink">CODE_HASH</text><text x="212" y="258" text-anchor="middle" class="t-mono t-warm">00 H(A) 01</text>
+            <rect class="d-box--warm" x="272" y="214" width="112" height="56" rx="8" data-part="leaf" />
+            <text x="328" y="238" text-anchor="middle" class="t-ink">slot 1000</text><text x="328" y="258" text-anchor="middle" class="t-mono t-warm">FF … E8</text>
+            <rect class="d-box--warm" x="392" y="214" width="112" height="56" rx="8" data-part="leaf" />
+            <text x="448" y="238" text-anchor="middle" class="t-ink">slot 1001</text><text x="448" y="258" text-anchor="middle" class="t-mono t-warm">FF … E9</text>
+          </svg>
+          <div class="flow" data-select>
+            <div class="card card--compact card--cool" data-highlight="branch">
+              <h5 class="text-cool">BranchNode</h5>
+              <p class="small">The prefix (the bits every key below shares), left and right</p>
+              <p class="small"><code>H(0x01 || prefix || L || R)</code></p>
+            </div>
+            <div class="card card--compact card--warm" data-highlight="leaf">
+              <h5 class="text-warm">LeafNode</h5>
+              <p class="small">The complete key and a 32-byte value</p>
+              <p class="small"><code>H(0x00 || key || value)</code></p>
+            </div>
+          </div>
+        </div>
+        <p class="caption">There are no extension nodes, because the prefix keeps the tree shallow.</p>
+      </section>
+
+      <!-- Keys and zones -->
+      <section>
+        <h2>Keys and zones</h2>
+        <div class="segbar segbar--strip" role="img" aria-label="The first key byte picks a zone: 0x00 account headers, 0x01 code chunks, 0x02 to 0xFE reserved, 0xFF storage">
+          <span data-size="1.5" data-tip="Zone 0x00" data-tip-detail="Account headers"><small>0x00</small>Account headers</span>
+          <span data-size="1.5" data-tip="Zone 0x01" data-tip-detail="Code chunks"><small>0x01</small>Code chunks</span>
+          <span data-size="2.7" class="seg--muted" data-tip="Zones 0x02 to 0xFE" data-tip-detail="Reserved for future categories"><small>0x02 – 0xFE</small>Reserved for future categories</span>
+          <span data-size="1.9" class="seg--cool" data-tip="Zone 0xFF" data-tip-detail="Storage"><small>0xFF</small>Storage</span>
+        </div>
+        <div class="bar-grid">
+          <div class="bar-grid-label">Account<small>34 bytes</small></div>
+          <div class="segbar segbar--slim segbar--mono segbar--fit" data-total="46">
+            <span data-size="3" class="seg--warm" data-tip="00" data-tip-detail="1 byte, the account-header zone">00</span>
+            <span data-size="20" data-tip="H(address)" data-tip-detail="32 bytes, the hashed address">H(address)</span>
+            <span data-size="3" data-tip="sub" data-tip-detail="1 byte, picks one of 256 leaves in the stem">sub</span>
+          </div>
+          <div class="bar-grid-label">Code<small>34 bytes</small></div>
+          <div class="segbar segbar--slim segbar--mono segbar--fit" data-total="46">
+            <span data-size="3" class="seg--warm" data-tip="01" data-tip-detail="1 byte, the code-chunk zone">01</span>
+            <span data-size="20" data-tip="H(code_hash || i)" data-tip-detail="32 bytes, shared by every account with this code">H(code_hash || i)</span>
+            <span data-size="3" data-tip="sub" data-tip-detail="1 byte, picks one of 256 chunks in the stem">sub</span>
+          </div>
+          <div class="bar-grid-label">Storage<small>66 bytes</small></div>
+          <div class="segbar segbar--slim segbar--mono segbar--fit" data-total="46">
+            <span data-size="3" class="seg--cool" data-tip="FF" data-tip-detail="1 byte, the storage zone">FF</span>
+            <span data-size="20" data-tip="H(address)" data-tip-detail="32 bytes, the hashed address">H(address)</span>
+            <span data-size="20" data-tip="H(address || i)" data-tip-detail="32 bytes, picks the group of 256 slots">H(address || i)</span>
+            <span data-size="3" data-tip="sub" data-tip-detail="1 byte, picks one slot in the group">sub</span>
+          </div>
+        </div>
+        <p class="caption"><code>i</code> picks a group of 256 slots or code chunks, and <code>sub</code> picks one inside it. Keys that differ only in <code>sub</code> share a stem, so they sit together.</p>
+      </section>
+
+      <!-- The account header -->
+      <section>
+        <h2>The account header</h2>
+        <p>One stem per account, <code>00 || H(address) || sub</code>, with 256 sub-indices.</p>
+        <p>The header holds the account’s <code>BASIC_DATA</code>, its <code>CODE_HASH</code> and its storage slots 0–63, all under that one stem.</p>
         <div class="cols">
           <div class="card card--compact">
-            <h5>Quarterly results</h5>
-            <div class="chart"><canvas data-chart="quarterly" role="img" aria-label="Bar chart of this year against last year, ahead in every quarter and rising from 42 to 86"></canvas></div>
+            <h5>BASIC_DATA</h5>
+            <p class="small">Version, code_size, nonce and balance at fixed offsets in one 32-byte value. Bytes 1–3 are reserved.</p>
           </div>
           <div class="card card--compact">
-            <h5>Monthly trend against target</h5>
-            <div class="chart"><canvas data-chart="trend" role="img" aria-label="Line chart of the measured value rising from 12 to 48, close to a target line that rises from 15 to 50"></canvas></div>
+            <h5>Slots 0–63</h5>
+            <p class="small">Live next to the account’s header. Slot 64 and up go to the storage zone.</p>
           </div>
-        </div>
-        <p class="caption">Bars and lines show values by position, the encoding people judge most accurately <a class="cite" href="#/references">[6]</a>.</p>
-      </section>
-
-      <!-- Key numbers -->
-      <section>
-        <h2>Key numbers</h2>
-        <div class="stats no-math">
-          <div class="stat">
-            <p class="figure-value">42%</p>
-            <p class="stat-label">Faster onboarding</p>
-            <p class="stat-text">Median time to first result, compared with last quarter.</p>
-          </div>
-          <div class="stat">
-            <p class="figure-value">$1.2M</p>
-            <p class="stat-label">Annual savings</p>
-            <p class="stat-text">Infrastructure and support costs combined.</p>
-          </div>
-          <div class="stat">
-            <p class="figure-value">3.2×</p>
-            <p class="stat-label">Throughput</p>
-            <p class="stat-text">Requests served per server at peak load.</p>
-          </div>
-        </div>
-        <div class="strip">
-          <span>Tell the audience what to do with these numbers.</span>
-          <span class="pill pill--on-dark">Next step</span>
         </div>
       </section>
 
-      <!-- Comparison cards. data-select makes them clickable: one card at a
-           time can be selected. Add class="is-selected" to a card to start
-           with it selected (it also shows that way in the PDF). -->
+      <!-- Three rules that matter -->
       <section>
-        <h2>Comparing options</h2>
-        <div class="cols cols--3 cols--stretch" data-select>
-          <div class="card">
-            <h4>Option A</h4>
-            <p class="small">Keep the current setup.</p>
-            <p class="figure-value">Low <small>effort</small></p>
-            <hr />
-            <ul class="checks">
-              <li>No migration needed</li>
-              <li>Known running costs</li>
+        <h2>Three rules that matter</h2>
+        <ol class="rows rows--numbered">
+          <li><span class="row-num">01</span><span class="row-title">Every value is 32 bytes</span><span class="row-text">There is no RLP list to append a field to</span></li>
+          <li><span class="row-num">02</span><span class="row-title">Writing zero deletes</span><span class="row-text">Zero means absent, so a cleared slot leaves no leaf</span></li>
+          <li><span class="row-num">03</span><span class="row-title">No storage root</span><span class="row-text">Account and slot leaves are written independently</span></li>
+        </ol>
+        <p class="callout"><strong>So where does <code>last_written_block</code> go?</strong> EIP-8188 defines it only for the MPT, as an extra RLP field.</p>
+      </section>
+
+      <!-- Final deliverable -->
+      <section class="middle">
+        <p class="label">Final deliverable</p>
+        <h1 class="hero">EIP-8435</h1>
+        <h3>Last-Written Block in PBT Leaves</h3>
+        <p class="lede">Packs <code>last_written_block</code> write-age metadata into the account and storage leaves of the Partitioned Binary Tree.</p>
+        <div class="row">
+          <span class="chip">Standards Track</span>
+          <span class="chip">Core</span>
+          <span class="chip chip--warm">Draft, merged</span>
+        </div>
+        <a href="https://eips.ethereum.org/EIPS/eip-8435">eips.ethereum.org/EIPS/eip-8435</a>
+      </section>
+
+      <!-- Account leaf. The EIP-8435 layout grows out of the EIP-8297 one,
+           one stage per press of →: the copy slides down (1), code_size
+           gives a byte to the reserved space (2), the reserved bytes become
+           last_written_block (3); then the three notes (4 to 6). -->
+      <section>
+        <h2>+0 bytes in the account leaf</h2>
+        <figure class="segrow">
+          <figcaption>EIP-8297 <code>BASIC_DATA</code>, 32 bytes</figcaption>
+          <div class="segbar" data-ticks>
+            <span data-key="v" data-size="1" data-tip="version">v</span>
+            <span data-key="field" data-size="3" class="seg--muted" data-tip="reserved" data-tip-detail="Unused">reserved</span>
+            <span data-key="code" data-size="4" data-tip="code_size">code_size</span>
+            <span data-key="nonce" data-size="8" data-tip="nonce">nonce</span>
+            <span data-key="balance" data-size="16" data-tip="balance">balance</span>
+          </div>
+        </figure>
+        <figure class="segrow morph fragment custom" data-fragment-index="1">
+          <span class="fragment custom morph-step" data-step="resize" data-fragment-index="2"></span>
+          <span class="fragment custom morph-step" data-step="relabel" data-fragment-index="3"></span>
+          <figcaption>EIP-8435 <code>BASIC_DATA</code>, still 32 bytes</figcaption>
+          <div class="segbar" data-ticks>
+            <span data-key="v" data-size="1" data-tip="version" data-tip-detail="Unchanged">v</span>
+            <span data-key="field" data-size="4" class="seg--warm" data-tip="last_written_block" data-tip-detail="The block that last wrote this account">last written block</span>
+            <span data-key="code" data-size="3" data-tip="code_size" data-tip-detail="Up to 16,777,215, about 256× the 64 KiB limit">code_size</span>
+            <span data-key="nonce" data-size="8" data-tip="nonce" data-tip-detail="Unchanged">nonce</span>
+            <span data-key="balance" data-size="16" data-tip="balance" data-tip-detail="Unchanged">balance</span>
+          </div>
+        </figure>
+        <div class="cols cols--wide-left cols--middle">
+          <dl class="facts">
+            <div class="fragment" data-fragment-index="4">
+              <dt><code>code_size</code></dt>
+              <dd>Shrinks from 4 bytes to 3, which still holds 16,777,215, about 256× the 64 KiB limit of EIP-7954</dd>
+            </div>
+            <div class="fragment" data-fragment-index="5">
+              <dt>nonce and balance</dt>
+              <dd>Same offsets, same widths</dd>
+            </div>
+          </dl>
+          <div class="flow flow--tight fragment" data-fragment-index="6">
+            <p class="figure-value text-warm">+0 bytes</p>
+            <p class="small">per account, where EIP-8188 adds 5</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Why 3 bytes is enough -->
+      <section>
+        <h2>Why 3 bytes is enough</h2>
+        <p class="lede"><span class="text-warm">256×</span> headroom over the code size limit</p>
+        <div class="hbars hbars--small" style="--max: 16777215; --hbar-label: 8em">
+          <div class="hbar hbar--cool" style="--value: 65536" data-tip="EIP-7954 code size limit" data-tip-detail="64 KiB, which is 65,536 bytes">
+            <span class="hbar-label">Code size limit</span><span class="hbar-track"><span class="hbar-fill"></span><span class="hbar-value">64 KiB</span></span>
+          </div>
+          <div class="hbar hbar--warm" style="--value: 16777215" data-tip="3-byte maximum" data-tip-detail="16,777,215 bytes, about 16 MiB">
+            <span class="hbar-label">3-byte maximum</span><span class="hbar-track"><span class="hbar-fill"></span><span class="hbar-value">~16 MiB</span></span>
+          </div>
+        </div>
+        <figure class="segrow">
+          <figcaption>EIP-7864, the earlier unified binary tree</figcaption>
+          <div class="segbar segbar--slim">
+            <span data-key="v" data-size="1" data-tip="version" data-tip-detail="Byte 0">v</span>
+            <span data-key="field" data-size="4" class="seg--muted" data-tip="reserved" data-tip-detail="Bytes 1 to 4">reserved</span>
+            <span data-key="code" data-size="3" class="seg--cool" data-tip="code_size" data-tip-detail="Bytes 5 to 7, 3 bytes">code_size</span>
+            <span data-key="nonce" data-size="8" data-tip="nonce" data-tip-detail="Bytes 8 to 15">nonce</span>
+            <span data-key="balance" data-size="16" data-tip="balance" data-tip-detail="Bytes 16 to 31">balance</span>
+          </div>
+        </figure>
+        <figure class="segrow morph fragment custom">
+          <figcaption>EIP-8435</figcaption>
+          <div class="segbar segbar--slim">
+            <span data-key="v" data-size="1" data-tip="version" data-tip-detail="Byte 0">v</span>
+            <span data-key="field" data-size="4" class="seg--warm" data-tip="last_written_block" data-tip-detail="Bytes 1 to 4, where EIP-7864 left space">last written</span>
+            <span data-key="code" data-size="3" class="seg--cool" data-tip="code_size" data-tip-detail="Bytes 5 to 7, the same 3 bytes">code_size</span>
+            <span data-key="nonce" data-size="8" data-tip="nonce" data-tip-detail="Bytes 8 to 15">nonce</span>
+            <span data-key="balance" data-size="16" data-tip="balance" data-tip-detail="Bytes 16 to 31">balance</span>
+          </div>
+        </figure>
+        <p class="caption push-down">Both put <code>code_size</code> at offset 5, as 3 bytes. From <a href="https://eips.ethereum.org/EIPS/eip-7864">EIP-7864</a> and <a href="https://eips.ethereum.org/EIPS/eip-7954">EIP-7954</a>.</p>
+      </section>
+
+      <!-- Storage leaf: 4 bytes appended to the 32-byte value on the next step -->
+      <section>
+        <h2>+4 bytes in the storage leaf</h2>
+        <div class="flow">
+          <figure class="segrow">
+            <figcaption>Storage leaf value in EIP-8297, for slots 0–63 and the storage zone alike</figcaption>
+            <div class="segbar segbar--slim" data-total="36">
+              <span data-key="slot" data-size="32" class="seg--cool" data-tip="slot_value" data-tip-detail="Bytes 0 to 31, the unchanged 32-byte EVM word"><code>slot_value</code>, the unchanged 32-byte EVM word</span>
+            </div>
+          </figure>
+          <figure class="segrow morph fragment custom" data-fragment-index="1">
+            <figcaption>With EIP-8435, 36 bytes</figcaption>
+            <div class="segbar segbar--slim" data-total="36" data-ticks>
+              <span data-key="slot" data-size="32" class="seg--cool" data-tip="slot_value" data-tip-detail="The unchanged 32-byte EVM word"><code>slot_value</code>, the unchanged 32-byte EVM word</span>
+              <span data-key="block" data-size="4" class="seg--warm" data-tip="last_written_block" data-tip-detail="Appended after the value">last written</span>
+            </div>
+          </figure>
+        </div>
+        <div class="cols cols--wide-left cols--middle fragment after-morph" data-fragment-index="1">
+          <div class="hbars hbars--small" style="--max: 9; --hbar-label: 5em">
+            <div class="hbars-head"><span></span><span>Extra state across ~1.5 billion slots</span></div>
+            <div class="hbar hbar--warm" style="--value: 6" data-tip="EIP-8435" data-tip-detail="About 6 GB, 4 bytes per slot">
+              <span class="hbar-label">EIP-8435</span><span class="hbar-track"><span class="hbar-fill"></span><span class="hbar-value">~6 GB</span></span>
+            </div>
+            <div class="hbar" style="--value: 9" data-tip="EIP-8188" data-tip-detail="About 9 GB for the same slots">
+              <span class="hbar-label">EIP-8188</span><span class="hbar-track"><span class="hbar-fill"></span><span class="hbar-value">~9 GB</span></span>
+            </div>
+          </div>
+          <div class="flow flow--tight">
+            <h5>Hashing cost is unchanged</h5>
+            <p class="small">The BLAKE3 input stays within 2 blocks, at up to 103 bytes.</p>
+          </div>
+        </div>
+        <p class="caption push-down">State-creation gas becomes <code>STATE_BYTES_PER_STORAGE_SET + 4</code> (EIP-8037).</p>
+      </section>
+
+      <!-- When it changes -->
+      <section>
+        <h2>When it changes</h2>
+        <div class="cols cols--stretch" data-select>
+          <div class="card card--compact">
+            <h5>Writes set it</h5>
+            <ul class="small">
+              <li>Balance transfers</li>
+              <li>Nonce bumps, including EIP-7702</li>
+              <li>Fee-recipient credits</li>
+              <li>Withdrawals (EIP-4895)</li>
+              <li>New accounts and slots</li>
+              <li>Slot value changes</li>
             </ul>
           </div>
-          <div class="card">
-            <h4>Option B</h4>
-            <p class="small">Rebuild from scratch.</p>
-            <p class="figure-value">High <small>effort</small></p>
-            <hr />
-            <ul class="checks">
-              <li>Clean architecture</li>
-              <li>Longest time to value</li>
+          <div class="card card--compact">
+            <h5>Reads never do</h5>
+            <ul class="small">
+              <li><code>SLOAD</code> and <code>BALANCE</code></li>
+              <li><code>EXTCODESIZE</code>, <code>EXTCODECOPY</code> and <code>EXTCODEHASH</code></li>
+              <li>Reading the field itself</li>
             </ul>
-          </div>
-          <div class="card">
-            <h4>Option C</h4>
-            <p class="small">Migrate step by step.</p>
-            <p class="figure-value">Medium <small>effort</small></p>
-            <hr />
-            <ul class="checks">
-              <li>Value in the first month</li>
-              <li>Reversible at each step</li>
-            </ul>
+            <h5>Reverts restore it</h5>
+            <p class="small">Journaled and rolled back with its own leaf</p>
           </div>
         </div>
-        <aside class="notes">
-          Click an option to select it while you talk about it; click it again to clear the selection.
-        </aside>
+        <p class="callout"><strong>No cascade.</strong> A storage write never touches the account leaf.</p>
       </section>
 
-      <!-- Timeline. One continuous timeline, two steps in view at a time. The
-           first two steps are on the slide from the start; the others are
-           fragments: each press of → (or ↓) grows the rail, adds a dot and
-           brings in its text, and the list glides up to keep the newest two
-           steps in view. Add or remove <li> items freely. -->
+      <!-- Retrieval at will -->
       <section>
-        <h2>Timeline</h2>
-        <p class="lede">Each press of → adds the next step to the timeline.</p>
-        <div class="timeline-window fill">
-          <ol class="timeline">
-            <li class="is-done"><span class="timeline-date">Q1 2026</span><h5>Discover</h5><p>Interview users and map the current process.</p></li>
-            <li class="is-done"><span class="timeline-date">Q2 2026</span><h5>Design</h5><p>Prototype and test the riskiest ideas first.</p></li>
-            <li class="fragment custom"><span class="timeline-date">Q3 2026</span><h5>Build</h5><p>Ship in small, reviewable increments.</p></li>
-            <li class="fragment custom"><span class="timeline-date">Q4 2026</span><h5>Launch</h5><p>Roll out gradually and watch the metrics.</p></li>
-            <li class="fragment custom"><span class="timeline-date">Q1 2027</span><h5>Review</h5><p>Measure the outcome against the goal.</p></li>
-            <li class="fragment custom"><span class="timeline-date">Q2 2027</span><h5>Scale</h5><p>Grow what worked and retire what did not.</p></li>
-          </ol>
-        </div>
-        <aside class="notes">
-          Press → or ↓ to add each step, and ← or ↑ to take the last one away again.
-        </aside>
-      </section>
-
-      <!-- Section 5, Extras. It is a vertical stack, so press ↓ to move down -->
-      <section>
-
-        <section class="divider">
-          <p class="divider-num">05</p>
-          <h2>Extras</h2>
-          <p class="lede">This section is a vertical stack. Press ↓ to go down or → to skip ahead.</p>
-        </section>
-
-        <!-- Fragment styles -->
-        <section>
-          <h2>Fragment styles</h2>
-          <p>Add <code>class="fragment"</code> plus an optional style to reveal anything step by step.</p>
-          <div class="cols cols--3">
-            <div class="card card--compact fragment"><h5>fade-in</h5><p class="small">The default</p></div>
-            <div class="card card--compact fragment fade-up"><h5>fade-up</h5><p class="small">Slides in from below</p></div>
-            <div class="card card--compact fragment fade-down"><h5>fade-down</h5><p class="small">Slides in from above</p></div>
-            <div class="card card--compact fragment fade-left"><h5>fade-left</h5><p class="small">Slides in from the right</p></div>
-            <div class="card card--compact fragment semi-fade-out"><h5>semi-fade-out</h5><p class="small">Dims to half when stepped</p></div>
-            <div class="card card--compact"><h5 class="fragment strike">strike</h5><p class="small">Crosses out text</p></div>
+        <h2>Retrieval at will</h2>
+        <div class="cols cols--wide-right cols--middle fill">
+          <div class="flow">
+            <h3>The block number travels <span class="text-warm">inside the leaf</span></h3>
+            <p class="small">Wherever the leaf goes, its write age goes with it. State that existed before activation reads 0 until its first write.</p>
           </div>
-        </section>
-
-        <!-- Auto-animate morphs elements with the same data-id between the two slides -->
-        <section data-auto-animate>
-          <h2>Auto-animate</h2>
-          <p>Two adjacent slides with <code>data-auto-animate</code> morph matching elements.</p>
-          <div class="row">
-            <div class="box" data-id="box-a">A</div>
-            <div class="box" data-id="box-b">B</div>
-            <div class="box box--dark" data-id="box-c">C</div>
-          </div>
-        </section>
-        <section data-auto-animate>
-          <h2>Auto-animate</h2>
-          <p>Elements are matched by <code>data-id</code>, then their size and position animate.</p>
-          <div class="row" style="justify-content: space-between; align-items: flex-end;">
-            <div class="box box--dark" data-id="box-c" style="width: 420px; height: 260px;">C</div>
-            <div class="box" data-id="box-b" style="width: 200px; height: 200px;">B</div>
-            <div class="box" data-id="box-a" style="width: 100px; height: 100px;">A</div>
-          </div>
-        </section>
-
-        <!-- Keyboard shortcuts -->
-        <section>
-          <h2>Presenting</h2>
-          <ul class="rows rows--numbered">
-            <li><span class="tag">S</span><span class="row-title">Speaker view</span><span class="row-text">Notes, timer and the next slide</span></li>
-            <li><span class="tag">Esc</span><span class="row-title">Overview</span><span class="row-text">Every slide on one screen</span></li>
-            <li><span class="tag">F</span><span class="row-title">Full screen</span><span class="row-text">Press Esc to leave</span></li>
-            <li><span class="tag">B</span><span class="row-title">Black screen</span><span class="row-text">Pause and take questions</span></li>
-            <li><span class="tag">←↑→↓</span><span class="row-title">Navigate</span><span class="row-text">Space also moves forward</span></li>
+          <ul class="icon-list">
+            <li>
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" /><path d="M16 16l4.5 4.5" /></svg>
+              <h5>Read-only</h5>
+              <p class="small">No execution, no side index, no state change</p>
+            </li>
+            <li>
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="7" ry="2.5" /><path d="M5 5.5v13c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-13" /><path d="M5 12c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5" /></svg>
+              <h5>Anywhere</h5>
+              <p class="small">Hot DB, cold blob, snapshot or block witness</p>
+            </li>
+            <li>
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" /><path d="M8.3 12.2l2.5 2.5 4.9-5" /></svg>
+              <h5>Verifiable</h5>
+              <p class="small">The leaf hash covers it, so an inclusion proof proves it</p>
+            </li>
           </ul>
-          <aside class="notes">
-            You are reading the speaker notes. The speaker view also shows a timer and the next slide.
-          </aside>
-        </section>
-
+        </div>
       </section>
 
-      <!-- FAQ -->
+      <!-- From draft to merged. One continuous timeline, as in the template:
+           the last two steps grow in one press of → at a time. Dates from
+           PR #12420 (opened Oct 4, merged Oct 24). Beside it, how long that
+           took and where the EIP stands among the EIP-1 statuses. -->
       <section>
-        <h2>Questions people usually ask</h2>
-        <ul class="rows">
-          <li>
-            <p class="row-title">How do I change the colours or fonts?</p>
-            <p class="row-text">Edit the tokens in <code>style.css</code>, or start with <code>npm run dev:dark</code> for the dark theme.</p>
-          </li>
-          <li>
-            <p class="row-title">How do I get a PDF?</p>
-            <p class="row-text">Run <code>npm run pdf</code>. The file lands in the project root as <code>slides.pdf</code>.</p>
-          </li>
-          <li>
-            <p class="row-title">Can I write slides in Markdown?</p>
-            <p class="row-text">Yes. Put the Markdown in a <code>data-markdown</code> section, like the “Written in Markdown” slide.</p>
-          </li>
-        </ul>
+        <h2>From draft to merged</h2>
+        <div class="cols cols--wide-left cols--middle fill">
+          <div class="timeline-window">
+            <ol class="timeline">
+              <li class="is-done"><span class="timeline-date">Oct 4, 2026</span><h5>Drafted</h5><p>Last-Written Block in PBT Leaves</p></li>
+              <li class="is-done"><span class="timeline-date">Oct 4, 2026</span><h5>PR #12420</h5><p>Opened on ethereum/EIPs</p></li>
+              <li class="is-done fragment custom"><span class="timeline-date">Oct 4 to 24, 2026</span><h5>CI and review</h5><p>Gaps found and fixed</p></li>
+              <li class="is-done fragment custom"><span class="timeline-date">Oct 24, 2026</span><h5>Merged</h5><p>With status Draft</p></li>
+            </ol>
+          </div>
+          <div class="flow">
+            <div class="flow flow--tight">
+              <p class="hero text-warm">20 days</p>
+              <p class="small">from the first draft to the merge</p>
+            </div>
+            <hr />
+            <div class="flow flow--tight">
+              <p class="label">Where EIP-8435 stands</p>
+              <div class="segbar segbar--slim" role="img" aria-label="EIP statuses: Draft, the current one, then Review, Last Call and Final">
+                <span data-size="1" class="seg--warm" data-tip="Draft, where EIP-8435 is now" data-tip-detail="Merged into ethereum/EIPs and still open to change">Draft</span>
+                <span data-size="1" class="seg--muted" data-tip="Review" data-tip-detail="The authors ask for peer review">Review</span>
+                <span data-size="1" class="seg--muted" data-tip="Last Call" data-tip-detail="The final review window, typically 14 days">Last Call</span>
+                <span data-size="1" class="seg--muted" data-tip="Final" data-tip-detail="The finished standard">Final</span>
+              </div>
+              <p class="caption">The statuses an EIP moves through, from EIP-1</p>
+            </div>
+          </div>
+        </div>
+        <p class="caption">Discussion on the <a href="https://ethereum-magicians.org/t/eip-8435-last-written-block-in-pbt-leaves/29860">Ethereum Magicians thread</a> and in <a href="https://github.com/ethereum/EIPs/pull/12420">PR #12420</a>.</p>
+      </section>
+
+      <!-- Outcomes: the standard first, then what led to it -->
+      <section>
+        <h2>Outcomes</h2>
+        <div class="feature">
+          <p class="label">Standard</p>
+          <p class="figure-value">EIP-8435</p>
+          <p class="lede">Merged as Draft, co-authored with Wei Han Ng</p>
+        </div>
+        <div class="cols">
+          <div class="flow flow--tight">
+            <p class="label">Exploration</p>
+            <h5>Reth prototype</h5>
+            <p class="small">EIP-8188 tiering on Reth, which led to the EIP</p>
+          </div>
+          <div class="flow flow--tight">
+            <p class="label">Writing</p>
+            <h5>Dev updates</h5>
+            <p class="small">Weekly notes from week 0 to 16, plus the Magicians thread</p>
+          </div>
+        </div>
+        <p class="lede push-down">The prototype shaped the standard, because a cold store needs the write age <span class="text-warm">inside the leaf</span>.</p>
+      </section>
+
+      <!-- Lessons and next steps -->
+      <section>
+        <h2>Lessons and next steps</h2>
+        <!-- <div class="cols">
+          <div class="flow">
+            <p class="label">What I learned</p>
+            <ol class="rows rows--numbered">
+              <li><span class="row-num">01</span><span class="row-title">Prototype before specifying</span></li>
+              <li><span class="row-num">02</span><span class="row-title">Specs live in edge cases</span></li>
+              <li><span class="row-num">03</span><span class="row-title">Follow the protocol’s direction</span></li>
+            </ol>
+          </div>
+          <div class="flow">
+            <p class="label">What comes next</p>
+            <ol class="rows rows--numbered">
+              <li><span class="row-num">01</span><span class="row-title">Feedback on Magicians</span></li>
+              <li><span class="row-num">02</span><span class="row-title">Test vectors, once the hash is set</span></li>
+              <li><span class="row-num">03</span><span class="row-title">An EIP-8297 client prototype</span></li>
+            </ol>
+          </div>
+        </div> -->
+        <ol class="rows rows--numbered">
+          <li><span class="row-num">01</span><span class="row-title">Feedback on Eth Magicians</span></li>
+          <li><span class="row-num">02</span><span class="row-title">Testing and Benchmarks</span></li>
+          <li><span class="row-num">03</span><span class="row-title">A client prototype (or glam-devnet-8)</span></li>
+        </ol>
       </section>
 
       <!-- Acknowledgements -->
@@ -474,53 +566,34 @@ print([fib(i) for i in range(8)])
           <div class="flow">
             <h5>People</h5>
             <ul class="credits">
-              <li><strong>Name Surname</strong>Reviewed early drafts of this talk</li>
-              <li><strong>Name Surname</strong>Shared the data behind the charts</li>
-              <li><strong>Name Surname</strong>Gave feedback at the rehearsal</li>
+              <li><strong>Wei Han Ng</strong>First Author of 8188 and reviewed early drafts of 8435</li>
+              <li><strong>Mario Havel</strong>Organiser of EPF</li>
             </ul>
           </div>
           <div class="flow">
             <h5>Organisations</h5>
             <ul class="credits">
-              <li><strong>Team or Lab Name</strong>Hosted the user interviews</li>
-              <li><strong>Event Name 2026</strong>Invited and hosted this talk</li>
+              <li><strong>Ethereum Foundation</strong>Hosted EPF</li>
             </ul>
           </div>
-          <div class="flow">
+          <!-- <div class="flow">
             <h5>Funding</h5>
             <ul class="credits">
               <li><strong>Funder Name</strong>Supported this work under grant ABC-123456</li>
             </ul>
-            <h5>Built with</h5>
-            <p class="small">reveal.js <a class="cite" href="#/references">[2]</a> and KaTeX <a class="cite" href="#/references">[4]</a>, with Chart.js and highlight.js.</p>
-          </div>
+          </div> -->
         </div>
-      </section>
-
-      <!-- References, in IEEE style: numbered in the order sources are first
-           cited, with titles of books, standards and software in <cite>.
-           Cite a source on any slide with <a class="cite" href="#/references">[1]</a>. -->
-      <section id="references">
-        <h2>References</h2>
-        <ol class="references">
-          <li>W3C, <cite>Web Content Accessibility Guidelines (WCAG) 2.2</cite>, W3C Recommendation, Oct. 2023. [Online]. Available: <a href="https://www.w3.org/TR/WCAG22/">https://www.w3.org/TR/WCAG22/</a></li>
-          <li>H. El Hattab, <cite>reveal.js: The HTML Presentation Framework</cite>, version 6.0.1. [Online]. Available: <a href="https://revealjs.com">https://revealjs.com</a></li>
-          <li>D. E. Knuth, <cite>The TeXbook</cite>. Reading, MA, USA: Addison-Wesley, 1984.</li>
-          <li>Khan Academy, <cite>KaTeX: The Fastest Math Typesetting Library for the Web</cite>, version 0.19.1. [Online]. Available: <a href="https://katex.org">https://katex.org</a></li>
-          <li>E. R. Tufte, <cite>The Visual Display of Quantitative Information</cite>, 2nd ed. Cheshire, CT, USA: Graphics Press, 2001.</li>
-          <li>W. S. Cleveland and R. McGill, “Graphical perception: Theory, experimentation, and application to the development of graphical methods,” <cite>J. Amer. Statist. Assoc.</cite>, vol. 79, no. 387, pp. 531–554, Sep. 1984, doi: <a href="https://doi.org/10.1080/01621459.1984.10478080">10.1080/01621459.1984.10478080</a>.</li>
-        </ol>
       </section>
 
       <!-- Closing slide -->
       <section class="centered no-footer">
-        <img class="logo" src="/images/logo.svg" data-dark-src="/images/logo-dark.svg" alt="" />
+        <img class="logo" src="/images/ethereum_logo.png" alt="" />
         <h1>Thank you</h1>
-        <p class="lede">Questions, comments and ideas are welcome.</p>
-        <div class="snippet">git clone https://example.com/your-name/your-talk.git</div>
+        <p class="lede">Questions, comments and ideas are welcome. <br>I’m @astrion0587 on Discord.</p>
+        <!-- <div class="snippet">git clone https://github.com/astrion-coder/reth</div> -->
         <div class="row">
-          <a class="pill" href="mailto:name@example.com">name@example.com</a>
-          <a class="pill pill--secondary" href="https://example.com">example.com</a>
+          <a class="pill" href="https://eips.ethereum.org/EIPS/eip-8435">eips.ethereum.org/EIPS/eip-8435</a>
+          <a class="pill pill--secondary" href="https://ethereum-magicians.org/t/eip-8435-last-written-block-in-pbt-leaves/29860">Ethereum Magicians thread</a>
         </div>
       </section>
 

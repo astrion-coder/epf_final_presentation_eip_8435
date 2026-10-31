@@ -69,6 +69,7 @@
   --fs-code-sm:    calc(14px * var(--type-scale));
   --fs-code-block: calc(13px * var(--type-scale));
   --fs-button:     calc(14px * var(--type-scale));
+  --fs-hero:       calc(56px * var(--type-scale));   /* one huge number or name per slide */
 
   /* ─── Radius ─────────────────────────────────────────────── */
   --radius-sm:   6px;
@@ -243,6 +244,11 @@
 }
 
 .reveal a.link-mute { color: var(--color-body); }
+
+/* A link on its own line in a slide or .flow column would stretch to the
+   full width (and so would the pointer's highlight): keep it to its text */
+.reveal .slides section > a,
+.reveal .flow > a { width: fit-content; }
 
 .reveal a:focus-visible {
   outline: 3px solid var(--color-focus-ring);
@@ -640,7 +646,13 @@
    leaves fragment animations on cards untouched.
    Selected: in a group with data-select, clicking a card selects it
    (import.js); it keeps the lifted, glowing look and gains a faint
-   accent tint, so it stays distinct from a card that is only hovered. */
+   accent tint, so it stays distinct from a card that is only hovered.
+   card--cool and card--warm use a chart colour instead of the accent,
+   with a border in that colour at rest. */
+.card--cool { --card-accent: var(--chart-1); }
+.card--warm { --card-accent: var(--chart-2); }
+.card:is(.card--cool, .card--warm) { border-color: color-mix(in srgb, var(--card-accent) 60%, var(--color-hairline)); }
+
 .card {
   transition:
     translate 0.3s var(--ease-out-expo),
@@ -652,14 +664,14 @@
 .card:hover,
 .card.is-selected {
   translate: 0 -6px;
-  border-color: var(--color-accent);
+  border-color: var(--card-accent, var(--color-accent));
   box-shadow:
-    0 0 0 1px var(--color-accent),
-    0 0 28px 2px color-mix(in srgb, var(--color-accent) 35%, transparent);
+    0 0 0 1px var(--card-accent, var(--color-accent)),
+    0 0 28px 2px color-mix(in srgb, var(--card-accent, var(--color-accent)) 35%, transparent);
 }
 
 .card.is-selected {
-  background: color-mix(in srgb, var(--color-accent) 7%, var(--color-canvas));
+  background: color-mix(in srgb, var(--card-accent, var(--color-accent)) 7%, var(--color-canvas));
 }
 
 [data-select] > .card { cursor: pointer; }
@@ -931,6 +943,10 @@
 }
 
 .stat .figure-value { font-size: var(--fs-display-xl); line-height: 1.11; color: var(--color-accent); }
+
+/* Tighter stats, for a slide that also has a diagram */
+.stats--compact .stat               { padding-top: var(--space-md); }
+.stats--compact .stat .figure-value { font-size: var(--fs-display-lg); line-height: 1.2; }
 .stat-label         { color: var(--color-ink); font-weight: 500; }
 .stat-text          { font-size: var(--fs-body-sm); line-height: 1.43; }
 
@@ -1004,6 +1020,10 @@
 
 .timeline-window > ol.timeline { transition: translate 0.6s var(--ease-out-expo); }
 
+/* A timeline window in a .cols.fill column takes the column's full height */
+.cols.fill:has(> .timeline-window) { grid-template-rows: minmax(0, 1fr); }
+.cols > .timeline-window { align-self: stretch; }
+
 /* Hidden step: no rail leading to it, no dot, no text */
 .reveal ol.timeline > li.fragment {
   opacity: 1;
@@ -1039,7 +1059,7 @@ html:is(.export, .reveal-print):not(.export-steps) .timeline-window {
 html:is(.export, .reveal-print):not(.export-steps) .timeline-window > ol.timeline {
   --timeline-gap: var(--space-md);
   display: grid;
-  grid-template-columns: 6em max-content minmax(0, 1fr);
+  grid-template-columns: max-content max-content minmax(0, 1fr);
   column-gap: var(--space-xl);
   translate: none !important;
 }
@@ -1059,6 +1079,14 @@ html:is(.export, .reveal-print):not(.export-steps) .reveal ol.timeline > li::aft
   bottom: calc(-1 * var(--timeline-gap) - 16px);
 }
 
+/* Beside other content (in a .cols column) there is less room, so each
+   step's text goes under its title */
+html:is(.export, .reveal-print):not(.export-steps) .cols > .timeline-window > ol.timeline {
+  grid-template-columns: max-content minmax(0, 1fr);
+}
+
+html:is(.export, .reveal-print):not(.export-steps) .reveal .cols ol.timeline > li > p { grid-column: 2; }
+
 .timeline-date {
   display: block;
   margin-bottom: var(--space-xs);
@@ -1069,6 +1097,551 @@ html:is(.export, .reveal-print):not(.export-steps) .reveal ol.timeline > li::aft
 
 .reveal ol.timeline h5 { margin-bottom: var(--space-xs); }
 .reveal ol.timeline p  { font-size: var(--fs-body-md); line-height: 1.5; }
+
+/* ================================================================
+   Bars — animated, with values on hover (built by bars.js)
+   ================================================================ */
+
+/* A caption over a bar */
+.segrow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  min-width: 0;
+  margin: 0;
+}
+
+.segrow > figcaption {
+  font-size: var(--fs-caption);
+  line-height: 1.33;
+  color: var(--color-body);
+}
+
+/* Segment bar: each segment is --size / --total of the bar. Segments
+   start at zero width and grow in, one after another, when their
+   slide is on screen (and are simply full size in the PDF). */
+.segbar {
+  --bar-height: 52px;
+  display: flex;
+  height: var(--bar-height);
+  border: 1px solid var(--color-hairline-strong);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.segbar--slim  { --bar-height: 44px; }
+.segbar--strip { --bar-height: auto; min-height: 76px; }
+
+.seg {
+  position: relative;
+  box-sizing: border-box;   /* padding stays inside the segment's share */
+  display: grid;
+  place-items: center;
+  align-content: center;    /* a hidden, taller label can't push the visible one off centre */
+  flex: none;
+  width: 0;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--color-surface-soft);
+  box-shadow: inset -1px 0 var(--color-hairline-strong);
+  color: var(--color-ink);
+  font-size: calc(var(--fs-caption) * 0.9);
+  line-height: 1.1;
+  text-align: center;
+  transition:
+    width 0.7s var(--ease-out-expo) calc(var(--i, 0) * 70ms),
+    background-color 0.4s ease,
+    box-shadow 0.2s ease;
+}
+
+.seg:last-child:not(.seg--warm, .seg--cool) { box-shadow: none; }
+
+.reveal .slides section.present:not(.stack) .seg,
+html:is(.export, .reveal-print) .seg {
+  width: calc(var(--size) / var(--total) * 100%);
+}
+
+.seg-label {
+  grid-area: 1 / 1;
+  padding: 0 6px;
+  transition: opacity 0.3s ease;
+}
+
+.seg:hover { box-shadow: inset 0 0 0 2px var(--color-accent); }
+
+/* Segment colours: muted for reserved space, warm (orange) for what
+   EIP-8435 adds or the cold side, cool (blue) for what stays or the hot side */
+.seg--muted { background: var(--color-canvas); color: var(--color-mute); }
+.seg--warm  { background: color-mix(in srgb, var(--chart-2) 20%, var(--color-canvas)); box-shadow: inset 0 0 0 1px var(--chart-2); }
+.seg--cool  { background: color-mix(in srgb, var(--chart-1) 18%, var(--color-canvas)); box-shadow: inset 0 0 0 1px var(--chart-1); }
+
+.segbar--mono .seg { font-family: var(--font-mono); }
+
+/* Strip: left-aligned labels with a small mono index above */
+.segbar--strip .seg {
+  place-items: center start;
+  padding: var(--space-md) var(--space-lg);
+  text-align: left;
+}
+
+.segbar--strip .seg-label { padding: 0; }
+
+.seg-label small {
+  display: block;
+  margin-bottom: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  color: var(--color-body);
+}
+
+/* Byte offsets under a bar, moving with the segment edges */
+.segbar-ticks {
+  display: flex;
+  height: 1.3em;
+  font-family: var(--font-mono);
+  font-size: calc(var(--fs-caption) * 0.85);
+  color: var(--color-mute);
+}
+
+.seg-tick {
+  position: relative;
+  flex: none;
+  width: 0;
+  transition: width 0.7s var(--ease-out-expo) calc(var(--i, 0) * 70ms);
+}
+
+.reveal .slides section.present:not(.stack) .seg-tick,
+html:is(.export, .reveal-print) .seg-tick {
+  width: calc(var(--size) / var(--total) * 100%);
+}
+
+.tick-label {
+  position: absolute;
+  left: 0;
+  transition: opacity 0.3s ease;
+}
+
+.seg-tick--end .tick-label { translate: -100% 0; }
+
+/* Morph: a bar that grows out of the bar above it, in three stages that
+   bars.js marks with classes:
+     is-arrived    it slides down out of the bar above (still that layout)
+     is-resized    segments take their new widths; byte offsets move
+     is-relabelled segments take their new labels and colours; caption shows
+   With step markers (<span class="fragment custom morph-step"
+   data-step="resize|relabel">) each stage waits for its own press of →.
+   Without them (is-auto) all three run on one press, one after another.
+   The .reveal .slides prefix outranks reveal.js's .fragment.visible, which
+   would otherwise show the row before it is marked is-arrived. */
+.reveal .slides .segrow.morph {
+  --resize-delay: 0s;
+  --relabel-delay: 0s;
+  opacity: 0;
+  translate: 0 var(--rise, 0px);
+  transition: translate 0.35s ease, opacity 0s linear 0.35s;
+}
+
+.reveal .slides .segrow.morph.is-auto { --resize-delay: 1.15s; --relabel-delay: 1.15s; }
+
+/* Arriving: the copy lights up on top of the bar it comes from, then
+   glides down evenly (so you can follow it) and its outline fades as it
+   lands */
+.reveal .slides .segrow.morph.is-arrived {
+  opacity: 1;
+  translate: 0 0;
+  transition: opacity 0s, translate 0.9s cubic-bezier(0.65, 0, 0.35, 1) 0.2s;
+}
+
+.segrow.morph.is-arrived > .segbar { animation: morph-lift 1.2s ease both; }
+
+@keyframes morph-lift {
+  0%      { box-shadow: 0 0 0 0 transparent; }
+  14%, 78% {
+    box-shadow:
+      0 0 0 2px var(--color-accent),
+      0 10px 28px color-mix(in srgb, var(--color-accent) 30%, transparent);
+  }
+  100%    { box-shadow: 0 0 0 0 transparent; }
+}
+
+/* Step markers take no space */
+.morph-step { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* The caption names the new layout, so it waits for the relabel */
+.segrow.morph > figcaption              { opacity: 0; transition: opacity 0.2s ease; }
+.segrow.morph.is-relabelled > figcaption { opacity: 1; transition: opacity 0.4s ease var(--relabel-delay); }
+
+/* Widths: the old layout until resized */
+.reveal .slides section.present .segrow.morph:not(.is-resized) :is(.seg, .seg-tick) {
+  width: calc(var(--before-size) / var(--before-total) * 100%);
+}
+
+.segrow.morph :is(.seg, .seg-tick) {
+  transition:
+    width 0.35s ease,
+    background-color 0.35s ease,
+    box-shadow 0.35s ease,
+    color 0.35s ease;
+}
+
+.segrow.morph.is-resized :is(.seg, .seg-tick) {
+  transition:
+    width 0.8s var(--ease-out-expo) var(--resize-delay),
+    background-color 0.5s ease var(--relabel-delay),
+    box-shadow 0.5s ease var(--relabel-delay),
+    color 0.5s ease var(--relabel-delay);
+}
+
+/* Labels: segment names change with the relabel, byte offsets with the resize */
+.segrow.morph [data-relabels] > :is(.seg-label, .tick-label) { transition: opacity 0.3s ease; }
+
+.segrow.morph:not(.is-relabelled) .seg[data-relabels] > .seg-label:not(.seg-label--before),
+.segrow.morph.is-relabelled .seg-label--before,
+.segrow.morph:not(.is-resized) .seg-tick[data-relabels] > .tick-label:not(.tick-label--before),
+.segrow.morph.is-resized .tick-label--before {
+  opacity: 0;
+}
+
+/* One-press morphs: the old labels stay while the bar slides down */
+.segrow.morph.is-auto.is-relabelled .seg-label--before,
+.segrow.morph.is-auto.is-resized .tick-label--before {
+  transition-delay: 1.15s;
+}
+
+.segrow.morph.is-auto.is-relabelled .seg[data-relabels] > .seg-label:not(.seg-label--before),
+.segrow.morph.is-auto.is-resized .seg-tick[data-relabels] > .tick-label:not(.tick-label--before) {
+  transition-delay: 1.45s;
+}
+
+/* Anything that should appear once a morph has finished */
+.reveal .fragment.after-morph.visible { transition-delay: 1.95s; }
+
+/* Bar chart: one bar per row against --max. The value sits just past
+   the end of its bar and fades in once the bar has grown. */
+.hbars {
+  --hbar-label: 6em;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  min-width: 0;
+}
+
+.hbars-head,
+.hbar {
+  display: grid;
+  grid-template-columns: var(--hbar-label) minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--space-lg);
+}
+
+.hbars-head {
+  font-size: var(--fs-caption);
+  color: var(--color-body);
+}
+
+.hbar-label { font-size: var(--fs-body-md); color: var(--color-ink); }
+.hbars--small .hbar-label { font-size: var(--fs-body-sm); }
+
+.hbar-track {
+  position: relative;
+  height: 40px;
+  margin-right: 6em;
+}
+
+.hbar-fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: var(--radius-sm);
+  background: var(--color-mute);
+  transition: width 0.8s var(--ease-out-expo) calc(var(--i, 0) * 90ms), box-shadow 0.2s ease;
+}
+
+.hbar-value {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--value) / var(--max) * 100% + 12px);
+  translate: 0 -50%;
+  white-space: nowrap;
+  font-size: var(--fs-body-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-charcoal);
+  opacity: 0;
+  transition: opacity 0.3s ease calc(0.5s + var(--i, 0) * 90ms);
+}
+
+.reveal .slides section.present:not(.stack) .hbar-fill,
+html:is(.export, .reveal-print) .hbar-fill {
+  width: max(4px, calc(var(--value) / var(--max) * 100%));
+}
+
+.reveal .slides section.present:not(.stack) .hbar-value,
+html:is(.export, .reveal-print) .hbar-value {
+  opacity: 1;
+}
+
+/* Bars inside a fragment grow when it is shown, and after the morph if
+   the fragment waits for one (after-morph) */
+.reveal .slides section.present .fragment:not(.visible) .hbar-fill  { width: 0; }
+.reveal .slides section.present .fragment:not(.visible) .hbar-value { opacity: 0; }
+.reveal .fragment.after-morph.visible .hbar-fill  { transition-delay: calc(2.1s + var(--i, 0) * 90ms), 0s; }
+.reveal .fragment.after-morph.visible .hbar-value { transition-delay: calc(2.6s + var(--i, 0) * 90ms); }
+
+.hbar--warm .hbar-fill  { background: var(--chart-2); }
+.hbar--cool .hbar-fill  { background: var(--chart-1); }
+.hbar--cool .hbar-label { color: var(--color-accent); }
+.hbar:hover .hbar-fill  { box-shadow: 0 0 0 2px var(--color-canvas), 0 0 0 4px var(--color-accent); }
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.seg, .seg-tick, .hbar-fill, .hbar-value, .segrow.morph, .segrow.morph *) { transition: none !important; animation: none !important; }
+}
+
+/* Tooltip for anything with data-tip (bars.js positions it) */
+.tip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 900;   /* under the custom cursor */
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 340px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-hairline-dark);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-dark);
+  color: var(--color-on-dark-mute);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.35;
+  pointer-events: none;
+  opacity: 0;
+  translate: -50% calc(-100% - 10px);
+  transition: opacity 0.15s ease;
+}
+
+.tip strong     { color: var(--color-on-dark); font-weight: 500; }
+.tip.is-visible { opacity: 1; }
+
+/* Label column beside bars */
+.bar-grid {
+  display: grid;
+  grid-template-columns: 7em minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-md) var(--space-lg);
+}
+
+.bar-grid-label {
+  font-size: var(--fs-body-sm);
+  line-height: 1.3;
+  color: var(--color-ink);
+}
+
+.bar-grid-label small {
+  display: block;
+  font-size: var(--fs-caption);
+  color: var(--color-body);
+}
+
+/* Legend under a chart: a coloured dot per series */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm) var(--space-xl);
+  font-size: var(--fs-body-sm);
+  color: var(--color-body);
+}
+
+.swatch {
+  display: inline-block;
+  width: 0.6em;
+  height: 0.6em;
+  margin-right: 0.45em;
+  border-radius: var(--radius-full);
+  background: var(--chart-1);
+  vertical-align: 0.05em;
+}
+
+.swatch--warm { background: var(--chart-2); }
+
+/* ================================================================
+   Talk components — small pieces used by the EIP-8435 slides
+   ================================================================ */
+
+/* A short label above a heading, in the accent colour */
+.label {
+  font-size: var(--fs-caption);
+  font-weight: 500;
+  line-height: 1.33;
+  color: var(--color-accent);
+}
+
+/* Colour a phrase or number like a chart series (large text only) */
+.text-warm { color: var(--chart-2); }
+.text-cool { color: var(--chart-1); }
+
+/* One huge number or name */
+.hero {
+  font-family: var(--font-display);
+  font-size: var(--fs-hero);
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* Push a block (a source note) to the bottom of the slide */
+.push-down { margin-top: auto; }
+
+/* Metadata chips: pill-shaped, not buttons */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4em 1em;
+  border: 1px solid var(--color-hairline-strong);
+  border-radius: var(--radius-full);
+  font-size: var(--fs-body-sm);
+  line-height: 1.2;
+  color: var(--color-charcoal);
+}
+
+.chip--warm { border-color: var(--chart-2); color: var(--color-ink); }
+
+/* Callout: one sentence to remember, with an accent bar */
+.callout {
+  padding: var(--space-lg) var(--space-xl);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: var(--color-surface-soft);
+  color: var(--color-charcoal);
+}
+
+.callout strong { color: var(--color-accent); }
+
+/* Cards in a row joined by arrows: a chain of reasoning */
+.steps {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  gap: var(--space-md);
+}
+
+.steps-arrow {
+  align-self: center;
+  font-size: var(--fs-heading-md);
+  color: var(--color-accent);
+}
+
+/* Facts: a term and its detail on each line, between hairlines. The
+   lines share one grid (subgrid), so the details line up. */
+.reveal dl.facts {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: var(--space-xl);
+  margin: 0;
+}
+
+/* Each line draws its own hairlines, so a line shown as a fragment
+   brings its lines in with it */
+.reveal dl.facts > div {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: baseline;
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.reveal dl.facts > div:first-child { border-top: 1px solid var(--color-hairline); }
+
+.reveal dl.facts dt { font-weight: 500; color: var(--color-ink); }
+.reveal dl.facts dd { margin: 0; font-size: var(--fs-body-sm); line-height: 1.43; color: var(--color-body); }
+
+/* Icon list: an icon beside a title and a line of text */
+.reveal ul.icon-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reveal ul.icon-list > li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--space-lg);
+  margin: 0;
+}
+
+.icon-list .icon { grid-row: span 2; }
+
+/* Feature: the one result that matters most, above the rest */
+.feature {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding-left: var(--space-xl);
+  border-left: 3px solid var(--chart-2);
+}
+
+/* Inline SVG diagrams and icons, coloured from the theme */
+.diagram {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: var(--font-body);
+}
+
+.diagram text       { fill: var(--color-body); font-size: 15px; }
+.diagram .t-ink     { fill: var(--color-ink); }
+.diagram .t-label   { fill: var(--color-ink); font-size: 14px; font-weight: 500; }
+.diagram .t-mono    { font-family: var(--font-mono); font-size: 13px; }
+.diagram .t-warm    { fill: var(--chart-2); }
+.diagram .panel     { fill: var(--color-surface-soft); stroke: var(--color-hairline-strong); }
+.diagram .edge      { fill: none; stroke: var(--color-mute); stroke-width: 1.5; }
+.diagram .edge--cool { stroke: var(--chart-1); }
+.diagram .edge--warm { stroke: var(--chart-2); }
+.diagram .dashed    { stroke-dasharray: 4 4; }
+.diagram .node      { fill: var(--color-canvas); stroke: var(--color-ink); stroke-width: 1.5; }
+.diagram .node--off  { fill: var(--color-hairline-strong); stroke: none; }
+.diagram .node--cool { fill: var(--chart-1); stroke: none; }
+.diagram .node--warm { fill: var(--chart-2); stroke: none; }
+.diagram .ring--cool { fill: color-mix(in srgb, var(--chart-1) 20%, var(--color-canvas)); stroke: var(--chart-1); stroke-width: 1.5; }
+.diagram .d-box       { fill: var(--color-canvas); stroke: var(--color-hairline-strong); }
+.diagram .d-box--warm { fill: color-mix(in srgb, var(--chart-2) 12%, var(--color-canvas)); stroke: var(--chart-2); }
+.diagram .arrow     { fill: var(--color-accent); }
+
+/* Parts lit up by a selected card (data-highlight), in the card's colour */
+.diagram [data-part] { transition: stroke 0.3s ease, stroke-width 0.3s ease, fill 0.3s ease, filter 0.3s ease; }
+.diagram [data-part].is-highlighted {
+  --highlight-colour: var(--highlight, var(--color-accent));
+  stroke: var(--highlight-colour);
+  stroke-width: 3;
+  fill: color-mix(in srgb, var(--highlight-colour) 24%, var(--color-canvas));
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--highlight-colour) 65%, transparent));
+}
+
+/* Nodes drawn as circles are already tinted and hold no text, so a lit
+   one fills in deeply to stand out from the rest */
+.diagram circle[data-part].is-highlighted {
+  stroke-width: 3.5;
+  fill: color-mix(in srgb, var(--highlight-colour) 65%, var(--color-canvas));
+  filter: drop-shadow(0 0 9px color-mix(in srgb, var(--highlight-colour) 80%, transparent));
+}
+
+/* Bigger lettering for a diagram that sits in a narrower column */
+.diagram--large text    { font-size: 17px; }
+.diagram--large .t-mono { font-size: 14px; }
+
+.icon {
+  width: 32px;
+  height: 32px;
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
 /* Auto-animate demo boxes ----------------------------------------- */
 .box {

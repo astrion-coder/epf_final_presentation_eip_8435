@@ -1,8 +1,20 @@
-# Presentation Template
+# EIP-8435 at the Ethereum Protocol Fellowship
+
+The final presentation for EIP-8435, *Last-Written Block in PBT Leaves*, from Cohort 7 of the Ethereum Protocol Fellowship.
+
+- **Live deck:** <https://astrion-coder.github.io/epf_final_presentation_eip_8435/>
+- **PDFs:** [slides.pdf](slides.pdf) (light) and [slides-dark.pdf](slides-dark.pdf) (dark)
+- **The EIP:** <https://eips.ethereum.org/EIPS/eip-8435>
+
+Every push to `main` rebuilds the deck and publishes it to GitHub Pages ([.github/workflows/pages.yml](.github/workflows/pages.yml)). The rest of this README documents the presentation template the deck is built on.
+
+## Presentation Template
 
 A minimal [reveal.js](https://revealjs.com) slide deck with rounded headings, pill buttons and hairline cards, following the design system in [DESIGN.md](DESIGN.md). It has two complete colour themes, black on white and white on near-black, chosen with `npm run dev` or `npm run dev:dark`. Slow, faint abstract art moves behind the slides, and one attribute turns it off. It comes with example slides for everything you are likely to need: text, lists, images, quotes, Markdown, code with step-through highlights, LaTeX maths, tables, charts, key numbers, comparison cards, a timeline, fragments, auto-animate and speaker notes.
 
 Everything is bundled locally (fonts, KaTeX, highlight.js, Chart.js), so the deck runs without an internet connection.
+
+**Two decks share the theme.** [index.html](index.html) is the talk, *EIP-8435: write-age metadata for the Partitioned Binary Tree* (Ethereum Protocol Fellowship, Cohort 7), at <http://localhost:5173>. [examples.html](examples.html) holds the template's example slides for every component, at <http://localhost:5173/examples.html>.
 
 ## Contents
 
@@ -86,6 +98,7 @@ By default you get **one page per slide**, with every fragment visible and code 
 npm run pdf -- talk.pdf              # different file name
 npm run pdf -- --fragments           # one page per fragment / code step
 npm run pdf -- --size 1920x1080      # bigger pages (same layout, scaled up)
+npm run pdf -- --page examples.html  # the example slides, as examples.pdf
 npm run pdf -- talk.pdf --fragments  # combine them
 npm run pdf:dark -- talk-dark.pdf    # dark theme, own file name
 ```
@@ -107,11 +120,13 @@ Upload the contents of `dist/` to any static host (GitHub Pages, Netlify, an S3 
 ## Project layout
 
 ```
-index.html            All slides (one <section> per slide)
+index.html            The talk (one <section> per slide)
+examples.html         The template's example slides
 style.css             The theme: design tokens + component styles
 import.js             reveal.js setup, KaTeX, footer, charts, PDF mode
 backdrop.js           The animated art behind the slides
 cursor.js             The iPad-style pointer
+bars.js               Animated bars with values on hover
 public/images/        Images, served at /images/... (plus *-dark.svg versions)
 scripts/export-pdf.js The `npm run pdf` helper
 vite.config.js        Build settings; picks the theme and applies it to index.html
@@ -120,7 +135,7 @@ DESIGN.md             The design system the theme implements
 
 ## Writing slides
 
-Every slide is a `<section>` inside `<div class="slides">` in [index.html](index.html). The easiest way to make a new slide is to copy the example slide closest to what you want and edit it.
+Every slide is a `<section>` inside `<div class="slides">` in [index.html](index.html). The easiest way to make a new slide is to copy the example closest to what you want from [examples.html](examples.html), or a slide of the talk, and edit it.
 
 ### Slide types
 
@@ -183,14 +198,17 @@ Every slide is a `<section>` inside `<div class="slides">` in [index.html](index
 | `.snippet` | `<div class="snippet">npm run dev</div>`: monospace pill with `$` prompt; click to copy |
 | `.tag` | `<span class="tag">npm run build</span>` |
 | `.card`, `.card--compact`, `.card--dark` | Bordered card; use the dark one once per slide. On hover a card lifts 6px and its border glows in the accent colour (the `.card:hover` rule in [style.css](style.css)) |
-| `data-select` on a group of cards | `<div class="cols cols--3" data-select>`: clicking a card selects it (lifted, accent border and glow, faint accent tint) and clears the others; clicking it again clears it. Add `class="is-selected"` to a card to start with it selected, which also shows in the PDF |
+| `data-select` on a group of cards | `<div class="cols cols--3" data-select>`: clicking a card selects it (lifted, accent border and glow, faint accent tint) and clears the others; clicking it again clears it. Add `class="is-selected"` to a card to start with it selected, which also shows in the PDF. Give a card `data-highlight="name"` and it also lights up everything on its slide with `data-part="name"` while selected, such as nodes in an SVG diagram (the talk's node-types slide). `card--cool` and `card--warm` colour a card's border, glow and highlights like the chart series |
 | `.terminal` + `.terminal-bar` | Code window with traffic-light dots (see the code slides) |
 | `ol.rows.rows--numbered` | Agenda rows with a number, a title and a description |
 | `ul.rows` | Question / answer rows (`.row-title`, `.row-text`) |
+| `dl.facts` | A term and its detail on each line, between hairlines: `<dl class="facts"><div><dt>nonce</dt><dd>Same offset</dd></div></dl>`. A line can be a fragment, and it brings its hairlines in with it |
+| `ul.icon-list` | An icon beside a title and a line of text: `<li><svg class="icon">…</svg><h5>Title</h5><p class="small">Text</p></li>` |
+| `.feature` | The one result that matters most, with an orange bar on its left: a `.label`, a `.figure-value` and a `.lede` |
 | `.stats` + `.stat` | Big numbers with a label and description |
 | `.strip` | Dark call-to-action band |
 | `ul.credits` | Acknowledgements: `<li><strong>Name</strong>What they did</li>` puts the name in ink above a muted line |
-| `ol.timeline` | Vertical timeline, top to bottom; mark finished steps with `li.is-done`. To grow it step by step, wrap it in `<div class="timeline-window fill">` and give the later steps `class="fragment custom"`: each press of → extends the rail, adds a dot and brings in the text, and the list glides so the newest two steps stay in view (the example slide). The PDF shows every step as a compact row |
+| `ol.timeline` | Vertical timeline, top to bottom; mark finished steps with `li.is-done`. To grow it step by step, wrap it in `<div class="timeline-window fill">` and give the later steps `class="fragment custom"`: each press of → extends the rail, adds a dot and brings in the text, and the list glides so the newest two steps stay in view (the example slide). The window can also be one column of a `.cols.fill`, beside other content (the talk's draft-to-merged slide). The PDF shows every step as a compact row |
 | `.derivation` | Equation rows with a note column |
 
 ### Fragments (step-by-step reveals)
@@ -270,6 +288,49 @@ Cite a source on any slide with a link to the References slide; clicking it jump
 ```
 
 When you add or remove a reference, renumber the citations so they still match. If your list grows past six or seven entries, split it over two slides (`id="references"` on the first). The Acknowledgements slide before it uses `ul.credits` for people, organisations and funding.
+
+### Bars (byte layouts, shares, bar charts)
+
+Two kinds of horizontal bar, both drawn by [bars.js](bars.js) with the look in the "Bars" block of [style.css](style.css). They grow in from the left when their slide appears, and every segment or bar shows its values in a tooltip on hover (`data-tip` for the title, `data-tip-detail` for the line under it).
+
+**Segment bar:** a row of segments in proportion, such as a byte layout or a stacked share. Each child is a segment; `data-size` is its width in units (bytes, percent…).
+
+```html
+<div class="segbar" data-ticks>
+  <span data-size="1" data-tip="version" data-tip-detail="Byte 0">v</span>
+  <span data-size="3" class="seg--muted" data-tip="reserved">reserved</span>
+  <span data-size="28" class="seg--warm" data-tip="payload">payload</span>
+</div>
+```
+
+- `data-total` sets the scale (default: the sum of the sizes); a bar with room left over shows it as empty track. Add `segbar--fit` to shrink the bar to its segments instead, for rows compared on one scale.
+- `data-ticks` prints byte offsets under the bar.
+- Segment colours: `seg--muted` (reserved), `seg--warm` (orange, what is new), `seg--cool` (blue, what stays). Bar sizes: `segbar--slim`, and `segbar--strip` for taller, left-aligned labels with a small `<small>` index above.
+
+**Before and after:** put each bar in a `<figure class="segrow">` with a `<figcaption>`, and mark the second one `morph fragment custom`. It grows out of the first bar in three stages: it slides down out of it, its segments take their new widths (the byte offsets move with them), then their new labels and colours (and the caption appears). Segments are matched by `data-key`; a segment with no match grows from nothing. By default all three stages run on one press of →. To give a stage its own press, put a step marker inside the figure, with `data-fragment-index` values in order:
+
+```html
+<figure class="segrow morph fragment custom" data-fragment-index="1">
+  <span class="fragment custom morph-step" data-step="resize" data-fragment-index="2"></span>
+  <span class="fragment custom morph-step" data-step="relabel" data-fragment-index="3"></span>
+  …
+</figure>
+```
+
+On a byte bar (one with `data-ticks`) the tooltips add each segment's byte range, worked out from its current width, so they stay right at every stage; use `data-tip-detail` for anything else. Content that should appear after a one-press morph gets `class="fragment after-morph"` with the morph's `data-fragment-index`. The talk's account-leaf slide uses step markers; the 3-byte and storage-leaf slides morph on one press. The PDF shows the finished state.
+
+**Bar chart:** one bar per row, against `--max`:
+
+```html
+<div class="hbars" style="--max: 2880">
+  <div class="hbar hbar--warm" style="--value: 768" data-tip="2 children" data-tip-detail="768 bytes">
+    <span class="hbar-label">2</span>
+    <span class="hbar-track"><span class="hbar-fill"></span><span class="hbar-value">768 B</span></span>
+  </div>
+</div>
+```
+
+`hbar--warm` and `hbar--cool` colour a bar like the chart series; others are grey. `--hbar-label` on `.hbars` widens the label column. Bars inside a fragment grow when it is shown, and inside an `after-morph` fragment once the morph has finished (the storage-leaf slide).
 
 ### Speaker notes
 
