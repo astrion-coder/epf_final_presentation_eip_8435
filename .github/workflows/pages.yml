@@ -1,4 +1,5 @@
-# Builds the deck and publishes dist/ to GitHub Pages on every push to main,
+# Builds the deck in its dark theme and publishes dist/ to GitHub Pages on
+# every push to main,
 # at https://astrion-coder.github.io/epf_final_presentation_eip_8435/
 # One-time setup: in the repository's Settings → Pages, set Source to
 # "GitHub Actions".
@@ -34,7 +35,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run build
+      - run: npm run build:dark
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
